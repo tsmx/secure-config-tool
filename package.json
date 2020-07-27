@@ -1,0 +1,8 @@
+{
+  "name": "secure-config-tool",
+  "version": "1.0.0",
+  "description": "Tool for generating encrypted secure-config entries.",
+  "main": "app.js",
+  "author": "tsmx",
+  "license": "MIT"
+}
