@@ -12,6 +12,7 @@ else if (process.env.CONFIG_ENCRYPTION_KEY.toString().length !== 32) {
     process.exit(-1);
 }
 key = Buffer.from(process.env.CONFIG_ENCRYPTION_KEY);
+console.log('CONFIG_ENCRYPTION_KEY found, using key: **************************' + process.env.CONFIG_ENCRYPTION_KEY.toString().slice(26));
 
 function encrypt(text) {
     let cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -40,7 +41,9 @@ const rl = readline.createInterface({
 
 rl.question('Please enter secret: ', (input) => {
     const hw = encrypt(input);
+    console.log('\r\nEncrpyted secret - copy & paste this line into your config file:');
     console.log(hw);
+    console.log('\r\nPlaintext for verification:');
     const check = decrypt(hw);
     console.log(check);
     if (check === input) {
