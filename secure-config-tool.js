@@ -41,7 +41,7 @@ const rl = readline.createInterface({
 
 rl.question('Please enter secret: ', (input) => {
     const hw = encrypt(input);
-    console.log('\r\nEncrpyted secret - copy & paste this line into your config file:');
+    console.log('\r\nEncrypted secret - copy & paste this line into your config file:');
     console.log(hw);
     console.log('\r\nPlaintext for verification:');
     const check = decrypt(hw);

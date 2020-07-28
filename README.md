@@ -12,7 +12,7 @@ Generating encrypted secrets for [secure-config](https://github.com/tsmx/secure-
 CONFIG_ENCRYPTION_KEY found, using key: **************************jklyxc
 Please enter secret: test
 
-Encrpyted secret - copy & paste this line into your config file:
+Encrypted secret - copy & paste this line into your config file:
 ENCRYPTED|5d3e2be52d6fdf818c00a864c2dfc1d0|75727dcb553eecd358de85f03bda33d7
 
 Plaintext for verification:
