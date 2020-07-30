@@ -1,6 +1,6 @@
 {
   "name": "@tsmx/secure-config-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
   "author": "tsmx",
