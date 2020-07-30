@@ -1,8 +1,19 @@
 {
-  "name": "secure-config-tool",
+  "name": "@tsmx/secure-config-tool",
   "version": "1.0.0",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
   "author": "tsmx",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tsmx/secure-config-tool.git"
+  },
+  "bin": {
+    "secure-config-tool": "./secure-config-tool.js"
+  },
+  "dependencies": {
+    "commander": "^6.0.0",
+    "readline-sync": "^1.4.10"
+  }
 }
