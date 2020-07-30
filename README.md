@@ -9,8 +9,8 @@ Generating encrypted secrets for [secure-config](https://github.com/tsmx/secure-
 ```
 [tsmx@localhost ]$ npm i -g @tsmx/secure-config-tool
 [tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=YOUR_SECRET_KEY_1234567890qwertz
-[tsmx@localhost ]$ secure-config-tool create --secret MySecretPassword
-ENCRYPTED|a8aed22ea73cadc0f2c045e5e9d96f09|cb086fb46834dcde68b8979cfe637a4158ce846957fbb4d4a7cac5a92c21ce6a
+[tsmx@localhost ]$ secure-config-tool create --secret MySecret
+ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f
 ```
 
 The key length must be 32 bytes!
