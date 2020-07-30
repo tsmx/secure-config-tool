@@ -15,5 +15,20 @@
   "dependencies": {
     "commander": "^6.0.0",
     "readline-sync": "^1.4.10"
-  }
+  },
+  "keywords": [
+    "configuration",
+    "config",
+    "secure",
+    "encryption",
+    "crypto",
+    "credentials",
+    "secret",
+    "key injection",
+    "multi",
+    "environment",
+    "JSON",
+    "NODE_ENV",
+    "AES"
+  ]
 }
