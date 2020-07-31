@@ -3,7 +3,14 @@ const readline = require('readline-sync');
 
 module.exports = function (options) {
     const verbose = options && options.verbose;
-    const key = crypt.retrieveKey(verbose);
+    var key = null;
+    try {
+        key = crypt.retrieveKey(verbose);
+    }
+    catch (error) {
+        console.log(error.message);
+        process.exit(-1);
+    }
     var secret = null;
     if (options && options.secret) {
         secret = options.secret;

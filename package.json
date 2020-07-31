@@ -1,10 +1,14 @@
 {
   "name": "@tsmx/secure-config-tool",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
   "author": "tsmx",
   "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "jest --coverage"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tsmx/secure-config-tool.git"
@@ -30,5 +34,8 @@
     "JSON",
     "NODE_ENV",
     "AES"
-  ]
+  ],
+  "devDependencies": {
+    "jest": "^26.2.2"
+  }
 }
