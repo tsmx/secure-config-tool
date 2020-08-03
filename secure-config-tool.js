@@ -3,6 +3,7 @@
 var program = require('commander');
 const createSecret = require('./functions/create-secret');
 const createKey = require('./functions/create-key');
+const decryptSecret = require('./functions/decrypt-secret');
 
 program
     .command('create')
@@ -26,6 +27,18 @@ program
         console.log('');
         console.log('  $ secure-config-tool genkey');
         console.log('  $ secure-config-tool genkey --export');
+    });
+
+    program
+    .command('decrypt <secret>')
+    .description('decrypts an encrypted entry for secure-config')
+    .option('-v, --verbose', 'verbose output')
+    .action(decryptSecret).on('--help', function () {
+        console.log('');
+        console.log('Examples:');
+        console.log('');
+        console.log('  $ secure-config-tool decrypt ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f');
+        console.log('  $ secure-config-tool decrypt ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f--verbose');
     });
 
 program.parse(process.argv);
