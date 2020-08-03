@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Generating encrypted secrets and keys for [secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
+Generating encrypted secrets, keys and decrypting values for [secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
 ## Usage
 

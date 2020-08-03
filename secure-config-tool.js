@@ -8,7 +8,7 @@ const decryptSecret = require('./functions/decrypt-secret');
 program
     .command('create')
     .description('creates an encrypted entry for secure-config')
-    .option('-s, --secret <secret>', 'the secret value to be encryoted, asked if not provided')
+    .option('-s, --secret <secret>', 'the secret value to be encrypted, asked if not provided')
     .option('-v, --verbose', 'verbose output')
     .action(createSecret).on('--help', function () {
         console.log('');
