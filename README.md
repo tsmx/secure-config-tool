@@ -29,6 +29,13 @@ iC771qNLe+OGVcduw8fqpDIIK7lK0T5p
 ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f
 ```
 
+### Decrypt values
+
+```
+[tsmx@localhost ]$ secure-config-tool decrypt "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"
+MySecret
+```
+
 ## Test
 
 ```
