@@ -23,13 +23,20 @@ module.exports.encrypt = function (text, key) {
 }
 
 module.exports.decrypt = function (text, key) {
-    let input = text.split('|');
-    input.shift();
-    let iv = Buffer.from(input[0], 'hex');
-    let encryptedText = Buffer.from(input[1], 'hex');
-    let decipher = crypto.createDecipheriv(algorithm, key, iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    let decrypted = null;
+    try {
+        let input = text.split('|');
+        input.shift();
+        let iv = Buffer.from(input[0], 'hex');
+        let encryptedText = Buffer.from(input[1], 'hex');
+        let decipher = crypto.createDecipheriv(algorithm, key, iv);
+        decrypted = decipher.update(encryptedText);
+        decrypted = Buffer.concat([decrypted, decipher.final()]);
+    }
+    catch {
+        throw new Error('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
+            'Please see the docs under: https://github.com/tsmx/secure-config');
+    }
     return decrypted.toString();
 }
 

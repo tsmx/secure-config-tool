@@ -37,8 +37,8 @@ program
         console.log('');
         console.log('Examples:');
         console.log('');
-        console.log('  $ secure-config-tool decrypt ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f');
-        console.log('  $ secure-config-tool decrypt ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f--verbose');
+        console.log('  $ secure-config-tool decrypt "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
+        console.log('  $ secure-config-tool decrypt --verbose "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
     });
 
 program.parse(process.argv);
