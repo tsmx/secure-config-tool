@@ -96,7 +96,7 @@ describe('secure-config-tool test suite', () => {
         done();
     });
 
-    it('tests a failes key retrieval - no key found', async (done) => {
+    it('tests a failed key retrieval - no key found', async (done) => {
         expect(() => {
             const crypt = require('../utils/crypt');
             crypt.retrieveKey();
@@ -112,5 +112,44 @@ describe('secure-config-tool test suite', () => {
         }).toThrow('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
         done();
     });
+
+    it('tests a successful command line key generation', async (done) => {
+        const createKey = require('../functions/create-key');
+        createKey();
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0].length).toBe(32);
+        done();
+    });
+
+    it('tests a successful command line secret encryption', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        const createSecret = require('../functions/create-secret');
+        createSecret({ secret: 'MySecret' });
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0].startsWith('ENCRYPTED|')).toBeTruthy();
+        done();
+    });
+
+    it('tests a successful command line secret encryption with verbose output', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        const createSecret = require('../functions/create-secret');
+        createSecret({ secret: 'MySecret', verbose: true });
+        expect(testOutput.length).toBe(5);
+        expect(testOutput[0].endsWith('lK0T5p')).toBeTruthy();
+        expect(testOutput[1].startsWith('ENCRYPTED|')).toBeTruthy();
+        expect(testOutput[3]).toBe('MySecret');
+        expect(testOutput[4]).toBe('Success.');
+        done();
+    });
+
+    it('tests a successful command line secret decryption', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        const decryptSecret = require('../functions/decrypt-secret');
+        decryptSecret('ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3fa', null);
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0]).toBe('MySecret123$');
+        done();
+    });
+
 
 });
