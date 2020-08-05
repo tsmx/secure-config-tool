@@ -29,7 +29,7 @@ program
         console.log('  $ secure-config-tool genkey --export');
     });
 
-    program
+program
     .command('decrypt <secret>')
     .description('decrypts an encrypted entry for secure-config')
     .option('-v, --verbose', 'verbose output')

@@ -12,7 +12,7 @@ module.exports.retrieveKey = function (verbose) {
         console.log('CONFIG_ENCRYPTION_KEY found, using key: **************************' + process.env.CONFIG_ENCRYPTION_KEY.toString().slice(26));
     }
     return Buffer.from(process.env.CONFIG_ENCRYPTION_KEY);
-}
+};
 
 module.exports.encrypt = function (text, key) {
     let iv = crypto.randomBytes(16);
@@ -20,7 +20,7 @@ module.exports.encrypt = function (text, key) {
     let encrypted = cipher.update(text);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
     return 'ENCRYPTED|' + iv.toString('hex') + '|' + encrypted.toString('hex');
-}
+};
 
 module.exports.decrypt = function (text, key) {
     let decrypted = null;
@@ -33,14 +33,14 @@ module.exports.decrypt = function (text, key) {
         decrypted = decipher.update(encryptedText);
         decrypted = Buffer.concat([decrypted, decipher.final()]);
     }
-    catch {
+    catch (error) {
         throw new Error('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
             'Please see the docs under: https://github.com/tsmx/secure-config');
     }
     return decrypted.toString();
-}
+};
 
 module.exports.genkey = function () {
     return crypto.randomBytes(24)
         .toString('base64');
-}
+};
