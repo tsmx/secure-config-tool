@@ -4,9 +4,16 @@ describe('secure-config-tool test suite', () => {
     const originalConsoleLog = console.log;
     const testConsoleLog = (output) => { testOutput.push(output) };
 
+    const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+    const TEST_KEY_BROKEN = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T';
+    const TEST_SECRET = 'MySecret123$';
+    const TEST_SECRET_ENCRYPTED = 'ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3fa';
+    const DECRYPT_ERROR = 'Decryption failed. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
+        'Please see the docs under: https://github.com/tsmx/secure-config';
+
     beforeEach(() => {
-        jest.resetModules();
         delete process.env['CONFIG_ENCRYPTION_KEY'];
+        jest.resetModules();
         console.log = testConsoleLog;
         testOutput = [];
 
@@ -18,27 +25,23 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful encryption and decryption', async (done) => {
         const crypt = require('../utils/crypt');
-        const text = 'TestSecret-123!';
-        const key = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-        const encrypted = crypt.encrypt(text, key);
+        const encrypted = crypt.encrypt(TEST_SECRET, TEST_KEY);
         expect(encrypted).toBeDefined();
         let parts = encrypted.split('|');
         expect(parts).toBeDefined()
         expect(parts.length).toBe(3);
         expect(parts[0]).toBe('ENCRYPTED');
-        const decrypted = crypt.decrypt(encrypted, key);
+        const decrypted = crypt.decrypt(encrypted, TEST_KEY);
         expect(decrypted).toBeDefined();
-        expect(decrypted).toBe(text);
+        expect(decrypted).toBe(TEST_SECRET);
         done();
     });
 
     it('tests a successful decryption', async (done) => {
         const crypt = require('../utils/crypt');
-        const encrypted = 'ENCRYPTED|2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0e71a';
-        const key = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-        const decrypted = crypt.decrypt(encrypted, key);
+        const decrypted = crypt.decrypt(TEST_SECRET_ENCRYPTED, TEST_KEY);
         expect(decrypted).toBeDefined();
-        expect(decrypted).toBe('MySecret123$');
+        expect(decrypted).toBe(TEST_SECRET);
         done();
     });
 
@@ -46,10 +49,8 @@ describe('secure-config-tool test suite', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = '2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0e71a';
-            const key = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-            const decrypted = crypt.decrypt(encrypted, key);
-        }).toThrow('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
-            'Please see the docs under: https://github.com/tsmx/secure-config');
+            const decrypted = crypt.decrypt(encrypted, TEST_KEY);
+        }).toThrow(DECRYPT_ERROR);
         done();
     });
 
@@ -57,10 +58,8 @@ describe('secure-config-tool test suite', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = 'ENCRYPTED|2a8660e3|30d052eeab498181b7071e2d5ce0e71a';
-            const key = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-            const decrypted = crypt.decrypt(encrypted, key);
-        }).toThrow('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
-            'Please see the docs under: https://github.com/tsmx/secure-config');
+            const decrypted = crypt.decrypt(encrypted, TEST_KEY);
+        }).toThrow(DECRYPT_ERROR);
         done();
     });
 
@@ -68,10 +67,8 @@ describe('secure-config-tool test suite', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = 'ENCRYPTED|2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0';
-            const key = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-            const decrypted = crypt.decrypt(encrypted, key);
-        }).toThrow('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
-            'Please see the docs under: https://github.com/tsmx/secure-config');
+            const decrypted = crypt.decrypt(encrypted, TEST_KEY);
+        }).toThrow(DECRYPT_ERROR);
         done();
     });
 
@@ -84,7 +81,7 @@ describe('secure-config-tool test suite', () => {
     });
 
     it('tests a successful key retrieval', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const crypt = require('../utils/crypt');
         expect(testOutput.length).toBe(0);
         const key = crypt.retrieveKey(true);
@@ -106,7 +103,7 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a failes key retrieval - invalid key length', async (done) => {
         expect(() => {
-            process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK';
+            process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_BROKEN;
             const crypt = require('../utils/crypt');
             crypt.retrieveKey();
         }).toThrow('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
@@ -122,7 +119,7 @@ describe('secure-config-tool test suite', () => {
     });
 
     it('tests a successful command line secret encryption', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const createSecret = require('../functions/create-secret');
         createSecret({ secret: 'MySecret' });
         expect(testOutput.length).toBe(1);
@@ -131,25 +128,75 @@ describe('secure-config-tool test suite', () => {
     });
 
     it('tests a successful command line secret encryption with verbose output', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const createSecret = require('../functions/create-secret');
-        createSecret({ secret: 'MySecret', verbose: true });
+        createSecret({ secret: TEST_SECRET, verbose: true });
         expect(testOutput.length).toBe(5);
         expect(testOutput[0].endsWith('lK0T5p')).toBeTruthy();
         expect(testOutput[1].startsWith('ENCRYPTED|')).toBeTruthy();
-        expect(testOutput[3]).toBe('MySecret');
+        expect(testOutput[3]).toBe(TEST_SECRET);
         expect(testOutput[4]).toBe('Success.');
         done();
     });
 
-    it('tests a successful command line secret decryption', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
-        const decryptSecret = require('../functions/decrypt-secret');
-        decryptSecret('ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3fa', null);
-        expect(testOutput.length).toBe(1);
-        expect(testOutput[0]).toBe('MySecret123$');
+    it('tests a failed command line secret encryption because of a missing key', async (done) => {
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        const createSecret = require('../functions/create-secret');
+        expect(() => {
+            createSecret({ secret: TEST_SECRET });
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
         done();
     });
 
+    it('tests a successful command line secret decryption', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const decryptSecret = require('../functions/decrypt-secret');
+        decryptSecret(TEST_SECRET_ENCRYPTED, null);
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0]).toBe(TEST_SECRET);
+        done();
+    });
+
+    it('tests a successful command line secret decryption with verbose output', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const decryptSecret = require('../functions/decrypt-secret');
+        decryptSecret(TEST_SECRET_ENCRYPTED, { verbose: true });
+        expect(testOutput.length).toBe(2);
+        expect(testOutput[0].endsWith('lK0T5p')).toBeTruthy();
+        expect(testOutput[1]).toBe(TEST_SECRET);
+        done();
+    });
+
+    it('tests a failed command line secret decryption bevause of a broken secret', async (done) => {
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const decryptSecret = require('../functions/decrypt-secret');
+        expect(() => {
+            decryptSecret('ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3', null);
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0]).toBe(DECRYPT_ERROR);
+        done();
+    });
+
+    it('tests a failed command line secret decryption bevause of a missing key', async (done) => {
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        const decryptSecret = require('../functions/decrypt-secret');
+        expect(() => {
+            decryptSecret(TEST_SECRET_ENCRYPTED, null);
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0]).toBe('Environment variable CONFIG_ENCRYPTION_KEY not set.');
+        done();
+    });
 
 });

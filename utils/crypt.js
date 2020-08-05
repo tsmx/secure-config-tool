@@ -34,7 +34,7 @@ module.exports.decrypt = function (text, key) {
         decrypted = Buffer.concat([decrypted, decipher.final()]);
     }
     catch (error) {
-        throw new Error('Decryption faild. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
+        throw new Error('Decryption failed. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
             'Please see the docs under: https://github.com/tsmx/secure-config');
     }
     return decrypted.toString();
