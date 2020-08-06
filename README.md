@@ -23,8 +23,8 @@ For better convenience I recommend the installation as a global package. Though 
 
 ```
 [tsmx@localhost ]$ secure-config-tool genkey
-iC771qNLe+OGVcduw8fqpDIIK7lK0T5p
-[tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=iC771qNLe+OGVcduw8fqpDIIK7lK0T5p
+9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f
+[tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f
 ```
 
 ### Encrypt values

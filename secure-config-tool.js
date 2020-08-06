@@ -20,13 +20,14 @@ program
 
 program
     .command('genkey')
-    .description('generates a 32 bytes AES key for encrypting/decrypting values for secure-config')
+    .description('generates a 32 byte AES key for encrypting/decrypting values for secure-config and returns the hex string')
+    .option('-b, --base64', 'the generated key is a base64 string')
     .action(createKey).on('--help', function () {
         console.log('');
         console.log('Examples:');
         console.log('');
         console.log('  $ secure-config-tool genkey');
-        console.log('  $ secure-config-tool genkey --export');
+        console.log('  $ secure-config-tool genkey --base64');
     });
 
 program

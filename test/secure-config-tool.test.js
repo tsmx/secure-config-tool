@@ -74,9 +74,21 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful key generation', async (done) => {
         const crypt = require('../utils/crypt');
+        const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
         const key = crypt.genkey();
         expect(key).toBeDefined();
+        expect(key.length).toBe(64);
+        expect(hexReg.test(key)).toBeTruthy();
+        expect(Buffer.from(key, 'hex').length).toBe(32);
+        done();
+    });
+
+    it('tests a successful key generation with base64', async (done) => {
+        const crypt = require('../utils/crypt');
+        const key = crypt.genkey(true);
+        expect(key).toBeDefined();
         expect(key.length).toBe(32);
+        expect(Buffer.from(key).length).toBe(32);
         done();
     });
 
@@ -90,6 +102,19 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('CONFIG_ENCRYPTION_KEY found')).toBeTruthy();
         expect(testOutput[0].endsWith('0T5p')).toBeTruthy();
+        done();
+    });
+
+    it('tests a successful key retrieval for a hexadecimal string', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
+        const crypt = require('../utils/crypt');
+        expect(testOutput.length).toBe(0);
+        const key = crypt.retrieveKey(true);
+        expect(key).toBeDefined();
+        expect(key.length).toBe(32);
+        expect(testOutput.length).toBe(1);
+        expect(testOutput[0].startsWith('CONFIG_ENCRYPTION_KEY found')).toBeTruthy();
+        expect(testOutput[0].endsWith('bd0f')).toBeTruthy();
         done();
     });
 
@@ -112,9 +137,21 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful command line key generation', async (done) => {
         const createKey = require('../functions/create-key');
+        const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
         createKey();
         expect(testOutput.length).toBe(1);
+        expect(testOutput[0].length).toBe(64);
+        expect(hexReg.test(testOutput[0])).toBeTruthy();
+        expect(Buffer.from(testOutput[0], 'hex').length).toBe(32);
+        done();
+    });
+
+    it('tests a successful command line key generation with base64', async (done) => {
+        const createKey = require('../functions/create-key');
+        createKey({ base64: true });
+        expect(testOutput.length).toBe(1);
         expect(testOutput[0].length).toBe(32);
+        expect(Buffer.from(testOutput[0]).length).toBe(32);
         done();
     });
 

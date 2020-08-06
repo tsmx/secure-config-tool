@@ -1,6 +1,5 @@
 const crypt = require('../utils/crypt');
 
-module.exports = function (_options) {
-    const key = crypt.genkey();
-    console.log(key);
+module.exports = function (options) {
+    console.log(crypt.genkey(options && options.base64));
 };
