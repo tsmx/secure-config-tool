@@ -1,6 +1,10 @@
 # [**secure-config-tool**](https://github.com/tsmx/secure-config-tool)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![npm (scoped)](https://img.shields.io/npm/v/@tsmx/secure-config-tool)
+![node-current (scoped)](https://img.shields.io/node/v/@tsmx/secure-config-tool)
+[![Build Status](https://travis-ci.org/tsmx/secure-config-tool.svg?branch=master)](https://travis-ci.org/tsmx/secure-config-tool)
+[![Coverage Status](https://coveralls.io/repos/github/tsmx/secure-config-tool/badge.svg?branch=master)](https://coveralls.io/github/tsmx/secure-config-tool?branch=master)
 
 Supporting command-line tool for [secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
