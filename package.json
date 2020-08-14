@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
-  "author": "tsmx",
+  "author": "tsmx <dev@tsmx.net>",
   "license": "MIT",
   "engines": {
     "node": ">=10.0.0",
