@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.com/tsmx/secure-config-tool.svg?branch=master)](https://travis-ci.org/tsmx/secure-config-tool)
 [![Coverage Status](https://coveralls.io/repos/github/tsmx/secure-config-tool/badge.svg?branch=master)](https://coveralls.io/github/tsmx/secure-config-tool?branch=master)
 
-Supporting command-line tool for [secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
+> Supporting command-line tool for [secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
 Features:
 - generating keys

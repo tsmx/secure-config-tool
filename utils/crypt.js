@@ -1,5 +1,7 @@
 const crypto = require('crypto');
-const algorithm = 'aes-256-cbc';
+const sc = require('@tsmx/string-crypto');
+
+const prefix = 'ENCRYPTED|';
 
 module.exports.retrieveKey = function (verbose) {
     const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
@@ -23,23 +25,13 @@ module.exports.retrieveKey = function (verbose) {
 };
 
 module.exports.encrypt = function (text, key) {
-    let iv = crypto.randomBytes(16);
-    let cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return 'ENCRYPTED|' + iv.toString('hex') + '|' + encrypted.toString('hex');
+    return prefix + sc.encrypt(text, { key: key });
 };
 
 module.exports.decrypt = function (text, key) {
     let decrypted = null;
     try {
-        let input = text.split('|');
-        input.shift();
-        let iv = Buffer.from(input[0], 'hex');
-        let encryptedText = Buffer.from(input[1], 'hex');
-        let decipher = crypto.createDecipheriv(algorithm, key, iv);
-        decrypted = decipher.update(encryptedText);
-        decrypted = Buffer.concat([decrypted, decipher.final()]);
+        decrypted = sc.decrypt(text.toString().substring(prefix.length), { key: key });
     }
     catch (error) {
         throw new Error('Decryption failed. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +

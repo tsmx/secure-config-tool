@@ -1,6 +1,6 @@
 {
   "name": "@tsmx/secure-config-tool",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
   "author": "tsmx <dev@tsmx.net>",
@@ -22,6 +22,7 @@
     "secure-config-tool": "./secure-config-tool.js"
   },
   "dependencies": {
+    "@tsmx/string-crypto": "^1.0.2",
     "commander": "^6.0.0",
     "readline-sync": "^1.4.10"
   },
