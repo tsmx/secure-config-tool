@@ -22,6 +22,7 @@
     "secure-config-tool": "./secure-config-tool.js"
   },
   "dependencies": {
+    "@tsmx/json-traverse": "^1.0.2",
     "@tsmx/string-crypto": "^1.0.2",
     "commander": "^6.0.0",
     "readline-sync": "^1.4.10"

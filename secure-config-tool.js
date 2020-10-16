@@ -4,6 +4,7 @@ var program = require('commander');
 const createSecret = require('./functions/create-secret');
 const createKey = require('./functions/create-key');
 const decryptSecret = require('./functions/decrypt-secret');
+const encryptFile = require('./functions/encrypt-file');
 
 program
     .command('create')
@@ -19,16 +20,6 @@ program
     });
 
 program
-    .command('genkey')
-    .description('generates a 32 byte AES key for encrypting/decrypting values for secure-config and returns the hex string')
-    .action(createKey).on('--help', function () {
-        console.log('');
-        console.log('Examples:');
-        console.log('');
-        console.log('  $ secure-config-tool genkey');
-    });
-
-program
     .command('decrypt <secret>')
     .description('decrypts an encrypted entry for secure-config')
     .option('-v, --verbose', 'verbose output')
@@ -38,6 +29,26 @@ program
         console.log('');
         console.log('  $ secure-config-tool decrypt "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
         console.log('  $ secure-config-tool decrypt --verbose "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
+    });
+
+program
+    .command('encrypt-file <config-file>')
+    .description('encrypts an existing JSON configuration file for use with secure-config')
+    .action(encryptFile).on('--help', function () {
+        console.log('');
+        console.log('Examples:');
+        console.log('');
+        console.log('  $ secure-config-tool encrypt-file config.json');
+    });
+
+program
+    .command('genkey')
+    .description('generates a 32 byte AES key for encrypting/decrypting values for secure-config and returns the hex string')
+    .action(createKey).on('--help', function () {
+        console.log('');
+        console.log('Examples:');
+        console.log('');
+        console.log('  $ secure-config-tool genkey');
     });
 
 program.parse(process.argv);
