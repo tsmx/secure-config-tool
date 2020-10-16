@@ -40,13 +40,7 @@ module.exports.decrypt = function (text, key) {
     return decrypted.toString();
 };
 
-module.exports.genkey = function (base64 = false) {
-    let result = null;
-    if (base64) {
-        result = crypto.randomBytes(24).toString('base64');
-    }
-    else {
-        result = crypto.randomBytes(32).toString('hex');
-    }
-    return result;
+module.exports.genkey = function () {
+    return crypto.randomBytes(32).toString('hex');
+
 };

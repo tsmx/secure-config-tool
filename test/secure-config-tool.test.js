@@ -63,7 +63,7 @@ describe('secure-config-tool test suite', () => {
         done();
     });
 
-    it('tests a failed decryption - illegal secret DATA', async (done) => {
+    it('tests a failed decryption - illegal secret data', async (done) => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = 'ENCRYPTED|2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0';
@@ -80,15 +80,6 @@ describe('secure-config-tool test suite', () => {
         expect(key.length).toBe(64);
         expect(hexReg.test(key)).toBeTruthy();
         expect(Buffer.from(key, 'hex').length).toBe(32);
-        done();
-    });
-
-    it('tests a successful key generation with base64', async (done) => {
-        const crypt = require('../utils/crypt');
-        const key = crypt.genkey(true);
-        expect(key).toBeDefined();
-        expect(key.length).toBe(32);
-        expect(Buffer.from(key).length).toBe(32);
         done();
     });
 
@@ -143,15 +134,6 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput[0].length).toBe(64);
         expect(hexReg.test(testOutput[0])).toBeTruthy();
         expect(Buffer.from(testOutput[0], 'hex').length).toBe(32);
-        done();
-    });
-
-    it('tests a successful command line key generation with base64', async (done) => {
-        const createKey = require('../functions/create-key');
-        createKey({ base64: true });
-        expect(testOutput.length).toBe(1);
-        expect(testOutput[0].length).toBe(32);
-        expect(Buffer.from(testOutput[0]).length).toBe(32);
         done();
     });
 
