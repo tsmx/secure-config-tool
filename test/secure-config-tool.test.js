@@ -3,6 +3,7 @@ describe('secure-config-tool test suite', () => {
     var testOutput = [];
     const originalConsoleLog = console.log;
     const testConsoleLog = (output) => { testOutput.push(output) };
+    const hexReg = new RegExp('^[0-9A-F]*$', 'i');
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_KEY_BROKEN = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T';
@@ -215,6 +216,67 @@ describe('secure-config-tool test suite', () => {
         mockExit.mockRestore();
         expect(testOutput.length).toBe(1);
         expect(testOutput[0]).toBe('Environment variable CONFIG_ENCRYPTION_KEY not set.');
+        done();
+    });
+
+    it('tests a successful command line file encryption with default patterns', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json');
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        expect(encryptedJson.database.host).toBe('127.0.0.1');
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).not.toBe('SecretDbUser');
+        let usenameParts = encryptedJson.database.username.split('|');
+        expect(usenameParts.length).toBe(3);
+        expect(usenameParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(usenameParts[1])).toBeTruthy();
+        expect(hexReg.test(usenameParts[2])).toBeTruthy();
+        expect(encryptedJson.database.password).toBeDefined();
+        expect(encryptedJson.database.password).not.toBe('SecretDbPassword');
+        let passwordParts = encryptedJson.database.password.split('|');
+        expect(passwordParts.length).toBe(3);
+        expect(passwordParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(passwordParts[1])).toBeTruthy();
+        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        done();
+    });
+
+    it('tests a successful command line file encryption with custom patterns', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { patterns: 'Password,test123' });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        expect(encryptedJson.database.host).toBe('127.0.0.1');
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).toBe('SecretDbUser');
+        expect(encryptedJson.database.password).toBeDefined();
+        expect(encryptedJson.database.password).not.toBe('SecretDbPassword');
+        let passwordParts = encryptedJson.database.password.split('|');
+        expect(passwordParts.length).toBe(3);
+        expect(passwordParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(passwordParts[1])).toBeTruthy();
+        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        done();
+    });
+
+    it('tests a failed command line file encryption because of a missing key', async (done) => {
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        const createFile = require('../functions/create-file');
+        expect(() => {
+            createFile('./test/testfiles/config.json');
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
         done();
     });
 
