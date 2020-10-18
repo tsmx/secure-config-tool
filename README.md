@@ -42,7 +42,7 @@ Reads an existing JSON configuration file and encrypts the values according to s
 [tsmx@localhost ]$ secure-config-tool create-file ./config.json > config-production.json
 ```
 
-If no patterns are specified using th e`-p` / `--patterns` option, the standard patterns are used: `'user', 'pass', 'token'`. For each pattern a case-insensitive match is tested for each key of the JSON file to be encrypted. If the match succeeds, the value of the key is encrypted.
+If no patterns are specified using the `-p` / `--patterns` option, the standard patterns are used: `'user', 'pass', 'token'`. For each pattern a case-insensitive match is tested for each key of the JSON file to be encrypted. If the match succeeds, the value of the key is encrypted.
 
 #### Using custom encryption patterns
 
