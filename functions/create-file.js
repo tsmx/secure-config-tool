@@ -5,14 +5,10 @@ const crypt = require('../utils/crypt');
 const defaultSecretPatterns = ['user', 'pass', 'token'];
 
 function patternMatch(value, patterns) {
-    result = false;
-    patterns.forEach((pattern) => {
+    return patterns.some((pattern) => {
         let regEx = new RegExp(pattern, 'i');
-        if (regEx.test(value)) {
-            result = true;
-        }
+        return regEx.test(value);
     });
-    return result;
 }
 
 module.exports = function (file, options) {
