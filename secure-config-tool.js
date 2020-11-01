@@ -25,9 +25,9 @@ program
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
     .action(createFile).on('--help', function () {
         console.log('');
-        console.log('If no patterns are specified with the -p option then the default patterns are used: \'user\',\'pass\',\'token\'.')
+        console.log('If no patterns are specified with the -p option then the default patterns are used: \'user\',\'pass\',\'token\'.');
         console.log('For every supplied pattern a case-insensitive regex match will be done for every key of the original JSON.');
-        console.log('If the match succeeds, the value of the key will be encrypted.')
+        console.log('If the match succeeds, the value of the key will be encrypted.');
         console.log('');
         console.log('Examples:');
         console.log('');
