@@ -14,6 +14,10 @@ Features:
 - encrypting single secrets
 - decrypting single secrets (for validation/testing purposes)
 
+## Usage
+
+![Usage GIF](https://tsmx.net/wp-content/uploads/2020/11/secure-config-tool-fast.gif)
+
 ## Installation
 
 ```
