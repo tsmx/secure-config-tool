@@ -6,6 +6,7 @@ describe('secure-config-tool test suite', () => {
     const hexReg = new RegExp('^[0-9A-F]*$', 'i');
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
+    const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
     const TEST_KEY_BROKEN = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T';
     const TEST_SECRET = 'MySecret123$';
     const TEST_SECRET_ENCRYPTED = 'ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3fa';
@@ -98,12 +99,12 @@ describe('secure-config-tool test suite', () => {
     });
 
     it('tests a successful key retrieval for a hexadecimal string', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const crypt = require('../utils/crypt');
         expect(testOutput.length).toBe(0);
         const key = crypt.retrieveKey(true);
         expect(key).toBeDefined();
-        expect(key.length).toBe(32);
+        expect(key.length).toBe(64);
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('CONFIG_ENCRYPTION_KEY found')).toBeTruthy();
         expect(testOutput[0].endsWith('bd0f')).toBeTruthy();
@@ -190,7 +191,7 @@ describe('secure-config-tool test suite', () => {
         done();
     });
 
-    it('tests a failed command line secret decryption bevause of a broken secret', async (done) => {
+    it('tests a failed command line secret decryption because of a broken secret', async (done) => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
@@ -205,7 +206,7 @@ describe('secure-config-tool test suite', () => {
         done();
     });
 
-    it('tests a failed command line secret decryption bevause of a missing key', async (done) => {
+    it('tests a failed command line secret decryption because of a missing key', async (done) => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const decryptSecret = require('../functions/decrypt-secret');
@@ -221,6 +222,33 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful command line file encryption with default patterns', async (done) => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json');
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        expect(encryptedJson.database.host).toBe('127.0.0.1');
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).not.toBe('SecretDbUser');
+        let usenameParts = encryptedJson.database.username.split('|');
+        expect(usenameParts.length).toBe(3);
+        expect(usenameParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(usenameParts[1])).toBeTruthy();
+        expect(hexReg.test(usenameParts[2])).toBeTruthy();
+        expect(encryptedJson.database.password).toBeDefined();
+        expect(encryptedJson.database.password).not.toBe('SecretDbPassword');
+        let passwordParts = encryptedJson.database.password.split('|');
+        expect(passwordParts.length).toBe(3);
+        expect(passwordParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(passwordParts[1])).toBeTruthy();
+        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        done();
+    });
+
+    it('tests a successful command line file encryption with a hex key and default patterns', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const createFile = require('../functions/create-file');
         createFile('./test/testfiles/config.json');
         expect(testOutput.length).toBe(1);

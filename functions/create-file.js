@@ -31,9 +31,9 @@ module.exports = function (file, options) {
                 cbSetValue(crypt.encrypt(propValue, key.toString()));
             }
         }
-    }
+    };
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
     jt.traverse(config, callbacks, true);
-    console.log(JSON.stringify(config, null, 4));
+    console.log(JSON.stringify(config, null, 2));
 };

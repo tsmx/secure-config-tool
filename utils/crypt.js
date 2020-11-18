@@ -9,17 +9,14 @@ module.exports.retrieveKey = function (verbose = false) {
     if (!process.env.CONFIG_ENCRYPTION_KEY) {
         throw new Error('Environment variable CONFIG_ENCRYPTION_KEY not set.');
     }
-    else if (process.env.CONFIG_ENCRYPTION_KEY.toString().length == 32) {
-        result = Buffer.from(process.env.CONFIG_ENCRYPTION_KEY);
-    }
-    else if (hexReg.test(process.env.CONFIG_ENCRYPTION_KEY)) {
-        result = Buffer.from(process.env.CONFIG_ENCRYPTION_KEY, 'hex');
+    else if (process.env.CONFIG_ENCRYPTION_KEY.toString().length == 32 || hexReg.test(process.env.CONFIG_ENCRYPTION_KEY.toString())) {
+        result = process.env.CONFIG_ENCRYPTION_KEY.toString();
     }
     else {
         throw new Error('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
     }
     if (verbose) {
-        console.log('CONFIG_ENCRYPTION_KEY found, using key: **************************' + process.env.CONFIG_ENCRYPTION_KEY.toString().slice(26));
+        console.log('CONFIG_ENCRYPTION_KEY found, using key: **************************' + result.slice(result.length - 6));
     }
     return result;
 };
