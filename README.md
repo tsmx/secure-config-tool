@@ -70,7 +70,7 @@ Encrypts a single value string for copy & paste to a JSON configuration file.
 MySecret
 ```
 
-Decrypts a single vaule string for testing purposes.
+Decrypts a single value string for testing purposes.
 
 ## Test
 
