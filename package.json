@@ -1,6 +1,6 @@
 {
   "name": "@tsmx/secure-config-tool",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Tool for generating encrypted secure-config entries.",
   "main": "secure-config-tool.js",
   "author": "tsmx <dev@tsmx.net>",
@@ -11,8 +11,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test-coverage": "jest --coverage",
-    "coveralls": "jest --coverage && coveralls < coverage/lcov.info"
+    "test-coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -43,7 +42,6 @@
     "AES"
   ],
   "devDependencies": {
-    "coveralls": "^3.1.0",
     "jest": "^26.2.2"
   }
 }
