@@ -7,7 +7,7 @@ const encryptSecret = require('./functions/encrypt-secret');
 const decryptSecret = require('./functions/decrypt-secret');
 
 program
-    .command('create-file <config-file>')
+    .command('create <config-file>')
     .description('creates an encrypted configuration out of an existing JSON configuration file')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
     .action(createFile).on('--help', function () {
@@ -18,8 +18,9 @@ program
         console.log('');
         console.log('Examples:');
         console.log('');
-        console.log('  $ secure-config-tool create-file config.json > config-production.json');
-        console.log('  $ secure-config-tool create-file -p "user,api,url" config.json > config-production.json');
+        console.log('  $ secure-config-tool create config.json > config-production.json');
+        console.log('  $ secure-config-tool create -p "user,api,url" config.json > config-production.json');
+        console.log('');
     });
 
 program
@@ -30,7 +31,8 @@ program
         console.log('');
         console.log('Examples:');
         console.log('');
-        console.log('  $ secure-config-tool create MySecretPassword');
+        console.log('  $ secure-config-tool encrypt "MySecretPassword"');
+        console.log('');
     });
 
 program
@@ -43,6 +45,7 @@ program
         console.log('');
         console.log('  $ secure-config-tool decrypt "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
         console.log('  $ secure-config-tool decrypt --verbose "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"');
+        console.log('');
     });
 
 program
@@ -53,6 +56,7 @@ program
         console.log('Examples:');
         console.log('');
         console.log('  $ secure-config-tool genkey');
+        console.log('');
     });
 
 program.parse(process.argv);
