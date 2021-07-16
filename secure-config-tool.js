@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+var { program } = require('commander');
 const createFile = require('./functions/create-file');
 const createKey = require('./functions/create-key');
 const encryptSecret = require('./functions/encrypt-secret');
