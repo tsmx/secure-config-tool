@@ -271,6 +271,21 @@ describe('secure-config-tool test suite', () => {
         expect(passwordParts[0]).toBe('ENCRYPTED');
         expect(hexReg.test(passwordParts[1])).toBeTruthy();
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        expect(encryptedJson['__hmac']).toBeUndefined();
+        done();
+    });
+
+    it('tests a successful command line file encryption with a HMAC generation', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { hmac: true });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson['__hmac']).toBeDefined();
+        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
         done();
     });
 

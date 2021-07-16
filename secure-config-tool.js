@@ -10,6 +10,7 @@ program
     .command('create <config-file>')
     .description('creates an encrypted configuration out of an existing JSON configuration file')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
+    .option('-h, --hmac', 'generates and adds the config files HMAC for later validation')
     .action(createFile).on('--help', function () {
         console.log('');
         console.log('If no patterns are specified with the -p option then the default patterns are used: \'user\',\'pass\',\'token\'.');
@@ -19,6 +20,7 @@ program
         console.log('Examples:');
         console.log('');
         console.log('  $ secure-config-tool create config.json > config-production.json');
+        console.log('  $ secure-config-tool create -h config.json > config-production.json');
         console.log('  $ secure-config-tool create -p "user,api,url" config.json > config-production.json');
         console.log('');
     });

@@ -1,46 +1,48 @@
 {
-  "name": "@tsmx/secure-config-tool",
-  "version": "1.2.3",
-  "description": "Tool for generating encrypted secure-config entries.",
-  "main": "secure-config-tool.js",
-  "author": "tsmx <dev@tsmx.net>",
-  "license": "MIT",
-  "engines": {
-    "node": ">=10.0.0",
-    "npm": ">=6.0.0"
-  },
-  "scripts": {
-    "test": "jest",
-    "test-coverage": "jest --coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tsmx/secure-config-tool.git"
-  },
-  "bin": {
-    "secure-config-tool": "./secure-config-tool.js"
-  },
-  "dependencies": {
-    "@tsmx/json-traverse": "^1.0.2",
-    "@tsmx/string-crypto": "^1.0.2",
-    "commander": "^8.0.0"
-  },
-  "keywords": [
-    "configuration",
-    "config",
-    "secure",
-    "encryption",
-    "crypto",
-    "credentials",
-    "secret",
-    "key injection",
-    "multi",
-    "environment",
-    "JSON",
-    "NODE_ENV",
-    "AES"
-  ],
-  "devDependencies": {
-    "jest": "^26.6.3"
-  }
+    "name": "@tsmx/secure-config-tool",
+    "version": "2.0.0",
+    "description": "Command-line tool for handling secure-config files and entries.",
+    "main": "secure-config-tool.js",
+    "author": "tsmx <dev@tsmx.net>",
+    "license": "MIT",
+    "engines": {
+        "node": ">=12.0.0",
+        "npm": ">=6.0.0"
+    },
+    "scripts": {
+        "test": "jest",
+        "test-coverage": "jest --coverage"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tsmx/secure-config-tool.git"
+    },
+    "bin": {
+        "secure-config-tool": "./secure-config-tool.js"
+    },
+    "dependencies": {
+        "@tsmx/json-traverse": "^1.0.2",
+        "@tsmx/object-hmac": "^1.1.1",
+        "@tsmx/string-crypto": "^1.0.2",
+        "commander": "^8.0.0"
+    },
+    "keywords": [
+        "secure-config",
+        "configuration",
+        "configuration management",
+        "config",
+        "secure",
+        "encryption",
+        "crypto",
+        "credentials",
+        "secret",
+        "key injection",
+        "multi-environment",
+        "JSON",
+        "NODE_ENV",
+        "AES"
+    ],
+    "devDependencies": {
+        "jest": "^26.6.3"
+    }
 }

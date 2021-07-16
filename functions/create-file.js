@@ -1,5 +1,6 @@
 const fs = require('fs');
 const jt = require('@tsmx/json-traverse');
+const oh = require('@tsmx/object-hmac');
 const crypt = require('../utils/crypt');
 
 const defaultSecretPatterns = ['user', 'pass', 'token'];
@@ -34,6 +35,9 @@ module.exports = function (file, options) {
     };
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
+    if (options && options.hmac) {
+        oh.createHmac(config, key);
+    }
     jt.traverse(config, callbacks, true);
     console.log(JSON.stringify(config, null, 2));
 };
