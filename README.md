@@ -57,7 +57,7 @@ Same as above, but your custom patterns are used. In the example every key is te
 ## Encrypt values
 
 ```
-[tsmx@localhost ]$ secure-config-tool create --secret MySecret
+[tsmx@localhost ]$ secure-config-tool create MySecret
 ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f
 ```
 

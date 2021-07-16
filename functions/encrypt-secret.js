@@ -1,7 +1,6 @@
 const crypt = require('../utils/crypt');
-const readline = require('readline-sync');
 
-module.exports = function (options) {
+module.exports = function (secret, options) {
     const verbose = options && options.verbose;
     let key = null;
     try {
@@ -10,13 +9,6 @@ module.exports = function (options) {
     catch (error) {
         console.log(error.message);
         process.exit(-1);
-    }
-    let secret = null;
-    if (options && options.secret) {
-        secret = options.secret;
-    }
-    else {
-        secret = readline.question('Please enter secret: ');
     }
     const encrypted = crypt.encrypt(secret, key);
     console.log(encrypted);

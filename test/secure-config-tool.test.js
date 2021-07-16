@@ -141,8 +141,8 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful command line secret encryption', async (done) => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
-        const createSecret = require('../functions/create-secret');
-        createSecret({ secret: 'MySecret' });
+        const createSecret = require('../functions/encrypt-secret');
+        createSecret(TEST_SECRET);
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('ENCRYPTED|')).toBeTruthy();
         done();
@@ -150,8 +150,8 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful command line secret encryption with verbose output', async (done) => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
-        const createSecret = require('../functions/create-secret');
-        createSecret({ secret: TEST_SECRET, verbose: true });
+        const createSecret = require('../functions/encrypt-secret');
+        createSecret(TEST_SECRET, { verbose: true });
         expect(testOutput.length).toBe(5);
         expect(testOutput[0].endsWith('lK0T5p')).toBeTruthy();
         expect(testOutput[1].startsWith('ENCRYPTED|')).toBeTruthy();
@@ -163,7 +163,7 @@ describe('secure-config-tool test suite', () => {
     it('tests a failed command line secret encryption because of a missing key', async (done) => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
-        const createSecret = require('../functions/create-secret');
+        const createSecret = require('../functions/encrypt-secret');
         expect(() => {
             createSecret({ secret: TEST_SECRET });
         }).toThrow();

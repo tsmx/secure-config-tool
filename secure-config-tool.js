@@ -2,22 +2,9 @@
 
 var program = require('commander');
 const createFile = require('./functions/create-file');
-const createSecret = require('./functions/create-secret');
 const createKey = require('./functions/create-key');
+const encryptSecret = require('./functions/encrypt-secret');
 const decryptSecret = require('./functions/decrypt-secret');
-
-program
-    .command('create')
-    .description('creates an encrypted entry for a secure-config configuration')
-    .option('-s, --secret <secret>', 'the secret value to be encrypted, asked if not provided')
-    .option('-v, --verbose', 'verbose output')
-    .action(createSecret).on('--help', function () {
-        console.log('');
-        console.log('Examples:');
-        console.log('');
-        console.log('  $ secure-config-tool create');
-        console.log('  $ secure-config-tool create --secret MySecretPassword');
-    });
 
 program
     .command('create-file <config-file>')
@@ -33,6 +20,17 @@ program
         console.log('');
         console.log('  $ secure-config-tool create-file config.json > config-production.json');
         console.log('  $ secure-config-tool create-file -p "user,api,url" config.json > config-production.json');
+    });
+
+program
+    .command('encrypt <secret>')
+    .description('encrypts a secret for a secure-config configuration')
+    .option('-v, --verbose', 'verbose output')
+    .action(encryptSecret).on('--help', function () {
+        console.log('');
+        console.log('Examples:');
+        console.log('');
+        console.log('  $ secure-config-tool create MySecretPassword');
     });
 
 program
