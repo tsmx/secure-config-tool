@@ -249,6 +249,9 @@ describe('secure-config-tool test suite', () => {
 
     it('tests a successful command line file encryption with a hex key and default patterns', async (done) => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
         createFile('./test/testfiles/config.json');
         expect(testOutput.length).toBe(1);
@@ -271,34 +274,29 @@ describe('secure-config-tool test suite', () => {
         expect(passwordParts[0]).toBe('ENCRYPTED');
         expect(hexReg.test(passwordParts[1])).toBeTruthy();
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
-        expect(encryptedJson['__hmac']).toBeUndefined();
-        done();
-    });
-
-    it('tests a successful command line file encryption with a HMAC generation', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
-        const oh = require('@tsmx/object-hmac');
-        const originalConfig = require('./testfiles/config.json');
-        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
-        const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { hmac: true });
-        expect(testOutput.length).toBe(1);
-        let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
         done();
     });
 
-    it('tests a successful command line file encryption with custom patterns', async (done) => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+    it('tests a successful command line file encryption with a hex key and custom patterns', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { patterns: 'Password,test123' });
+        createFile('./test/testfiles/config.json', { patterns: 'host,pass'});
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson).toBeDefined();
         expect(encryptedJson.database).toBeDefined();
         expect(encryptedJson.database.host).toBeDefined();
-        expect(encryptedJson.database.host).toBe('127.0.0.1');
+        expect(encryptedJson.database.host).not.toBe('127.0.0.1');
+        let hostParts = encryptedJson.database.host.split('|');
+        expect(hostParts.length).toBe(3);
+        expect(hostParts[0]).toBe('ENCRYPTED');
+        expect(hexReg.test(hostParts[1])).toBeTruthy();
+        expect(hexReg.test(hostParts[2])).toBeTruthy();
         expect(encryptedJson.database.username).toBeDefined();
         expect(encryptedJson.database.username).toBe('SecretDbUser');
         expect(encryptedJson.database.password).toBeDefined();
@@ -308,6 +306,55 @@ describe('secure-config-tool test suite', () => {
         expect(passwordParts[0]).toBe('ENCRYPTED');
         expect(hexReg.test(passwordParts[1])).toBeTruthy();
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        expect(encryptedJson['__hmac']).toBeDefined();
+        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
+        done();
+    });
+
+    it('tests a successful command line file encryption without HMAC generation', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { nohmac: true });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson['__hmac']).toBeUndefined();
+        done();
+    });
+
+    it('tests a successful command line file encryption with a custom HMAC property', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { hmacprop: '_signature' });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson['_signature']).toBeDefined();
+        expect(encryptedJson['_signature']).toStrictEqual(expectedHmac);
+        done();
+    });
+
+    it('tests a successful command line processing without any encryption but HMAC generation with a hex key', async (done) => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { noencryption: true });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        expect(encryptedJson.database.host).toBe('127.0.0.1');
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).toBe('SecretDbUser');
+        expect(encryptedJson.database.password).toBeDefined();
+        expect(encryptedJson.database.password).toBe('SecretDbPassword');
+        expect(encryptedJson['__hmac']).toBeDefined();
+        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
         done();
     });
 

@@ -35,9 +35,16 @@ module.exports = function (file, options) {
     };
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
-    if (options && options.hmac) {
-        oh.createHmac(config, key);
+    if (!options || (options && options.nohmac !== true)) {
+        if (options && options.hmacprop) {
+            oh.createHmac(config, key, options.hmacprop);
+        }
+        else {
+            oh.createHmac(config, key);
+        }
     }
-    jt.traverse(config, callbacks, true);
+    if (!options || (options && options.noencryption !== true)) {
+        jt.traverse(config, callbacks, true);
+    }
     console.log(JSON.stringify(config, null, 2));
 };
