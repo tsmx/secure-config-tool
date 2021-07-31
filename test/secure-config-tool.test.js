@@ -29,7 +29,7 @@ describe('secure-config-tool test suite', () => {
         console.log = originalConsoleLog;
     });
 
-    it('tests a successful encryption and decryption', async (done) => {
+    it('tests a successful encryption and decryption', () => {
         const crypt = require('../utils/crypt');
         const encrypted = crypt.encrypt(TEST_SECRET, TEST_KEY);
         expect(encrypted).toBeDefined();
@@ -40,45 +40,40 @@ describe('secure-config-tool test suite', () => {
         const decrypted = crypt.decrypt(encrypted, TEST_KEY);
         expect(decrypted).toBeDefined();
         expect(decrypted).toBe(TEST_SECRET);
-        done();
     });
 
-    it('tests a successful decryption', async (done) => {
+    it('tests a successful decryption', () => {
         const crypt = require('../utils/crypt');
         const decrypted = crypt.decrypt(TEST_SECRET_ENCRYPTED, TEST_KEY);
         expect(decrypted).toBeDefined();
         expect(decrypted).toBe(TEST_SECRET);
-        done();
     });
 
-    it('tests a failed decryption - illegal secret structure', async (done) => {
+    it('tests a failed decryption - illegal secret structure', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = '2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0e71a';
             const decrypted = crypt.decrypt(encrypted, TEST_KEY);
         }).toThrow(DECRYPT_ERROR);
-        done();
     });
 
-    it('tests a failed decryption - illegal secret IV', async (done) => {
+    it('tests a failed decryption - illegal secret IV', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = 'ENCRYPTED|2a8660e3|30d052eeab498181b7071e2d5ce0e71a';
             const decrypted = crypt.decrypt(encrypted, TEST_KEY);
         }).toThrow(DECRYPT_ERROR);
-        done();
     });
 
-    it('tests a failed decryption - illegal secret data', async (done) => {
+    it('tests a failed decryption - illegal secret data', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             const encrypted = 'ENCRYPTED|2a8660e3e6614b58b1c1b13d5db49ff0|30d052eeab498181b7071e2d5ce0';
             const decrypted = crypt.decrypt(encrypted, TEST_KEY);
         }).toThrow(DECRYPT_ERROR);
-        done();
     });
 
-    it('tests a successful key generation', async (done) => {
+    it('tests a successful key generation', () => {
         const crypt = require('../utils/crypt');
         const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
         const key = crypt.genkey();
@@ -86,10 +81,9 @@ describe('secure-config-tool test suite', () => {
         expect(key.length).toBe(64);
         expect(hexReg.test(key)).toBeTruthy();
         expect(Buffer.from(key, 'hex').length).toBe(32);
-        done();
     });
 
-    it('tests a successful key retrieval', async (done) => {
+    it('tests a successful key retrieval', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const crypt = require('../utils/crypt');
         expect(testOutput.length).toBe(0);
@@ -99,10 +93,9 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('CONFIG_ENCRYPTION_KEY found')).toBeTruthy();
         expect(testOutput[0].endsWith('0T5p')).toBeTruthy();
-        done();
     });
 
-    it('tests a successful key retrieval for a hexadecimal string', async (done) => {
+    it('tests a successful key retrieval for a hexadecimal string', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const crypt = require('../utils/crypt');
         expect(testOutput.length).toBe(0);
@@ -112,27 +105,24 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('CONFIG_ENCRYPTION_KEY found')).toBeTruthy();
         expect(testOutput[0].endsWith('bd0f')).toBeTruthy();
-        done();
     });
 
-    it('tests a failed key retrieval - no key found', async (done) => {
+    it('tests a failed key retrieval - no key found', () => {
         expect(() => {
             const crypt = require('../utils/crypt');
             crypt.retrieveKey();
         }).toThrow('Environment variable CONFIG_ENCRYPTION_KEY not set.');
-        done();
     });
 
-    it('tests a failes key retrieval - invalid key length', async (done) => {
+    it('tests a failes key retrieval - invalid key length', () => {
         expect(() => {
             process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_BROKEN;
             const crypt = require('../utils/crypt');
             crypt.retrieveKey();
         }).toThrow('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
-        done();
     });
 
-    it('tests a successful command line key generation', async (done) => {
+    it('tests a successful command line key generation', () => {
         const createKey = require('../functions/create-key');
         const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
         createKey();
@@ -140,19 +130,17 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput[0].length).toBe(64);
         expect(hexReg.test(testOutput[0])).toBeTruthy();
         expect(Buffer.from(testOutput[0], 'hex').length).toBe(32);
-        done();
     });
 
-    it('tests a successful command line secret encryption', async (done) => {
+    it('tests a successful command line secret encryption', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const createSecret = require('../functions/encrypt-secret');
         createSecret(TEST_SECRET);
         expect(testOutput.length).toBe(1);
         expect(testOutput[0].startsWith('ENCRYPTED|')).toBeTruthy();
-        done();
     });
 
-    it('tests a successful command line secret encryption with verbose output', async (done) => {
+    it('tests a successful command line secret encryption with verbose output', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const createSecret = require('../functions/encrypt-secret');
         createSecret(TEST_SECRET, { verbose: true });
@@ -161,10 +149,9 @@ describe('secure-config-tool test suite', () => {
         expect(testOutput[1].startsWith('ENCRYPTED|')).toBeTruthy();
         expect(testOutput[3]).toBe(TEST_SECRET);
         expect(testOutput[4]).toBe('Success.');
-        done();
     });
 
-    it('tests a failed command line secret encryption because of a missing key', async (done) => {
+    it('tests a failed command line secret encryption because of a missing key', () => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const createSecret = require('../functions/encrypt-secret');
@@ -173,29 +160,26 @@ describe('secure-config-tool test suite', () => {
         }).toThrow();
         expect(mockExit).toHaveBeenCalledWith(-1);
         mockExit.mockRestore();
-        done();
     });
 
-    it('tests a successful command line secret decryption', async (done) => {
+    it('tests a successful command line secret decryption', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const decryptSecret = require('../functions/decrypt-secret');
         decryptSecret(TEST_SECRET_ENCRYPTED, null);
         expect(testOutput.length).toBe(1);
         expect(testOutput[0]).toBe(TEST_SECRET);
-        done();
     });
 
-    it('tests a successful command line secret decryption with verbose output', async (done) => {
+    it('tests a successful command line secret decryption with verbose output', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const decryptSecret = require('../functions/decrypt-secret');
         decryptSecret(TEST_SECRET_ENCRYPTED, { verbose: true });
         expect(testOutput.length).toBe(2);
         expect(testOutput[0].endsWith('lK0T5p')).toBeTruthy();
         expect(testOutput[1]).toBe(TEST_SECRET);
-        done();
     });
 
-    it('tests a failed command line secret decryption because of a broken secret', async (done) => {
+    it('tests a failed command line secret decryption because of a broken secret', () => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
@@ -207,10 +191,9 @@ describe('secure-config-tool test suite', () => {
         mockExit.mockRestore();
         expect(testOutput.length).toBe(1);
         expect(testOutput[0]).toBe(DECRYPT_ERROR);
-        done();
     });
 
-    it('tests a failed command line secret decryption because of a missing key', async (done) => {
+    it('tests a failed command line secret decryption because of a missing key', () => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const decryptSecret = require('../functions/decrypt-secret');
@@ -221,10 +204,9 @@ describe('secure-config-tool test suite', () => {
         mockExit.mockRestore();
         expect(testOutput.length).toBe(1);
         expect(testOutput[0]).toBe('Environment variable CONFIG_ENCRYPTION_KEY not set.');
-        done();
     });
 
-    it('tests a successful command line file encryption with default patterns', async (done) => {
+    it('tests a successful command line file encryption with default patterns', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
         const createFile = require('../functions/create-file');
         createFile('./test/testfiles/config.json');
@@ -248,10 +230,9 @@ describe('secure-config-tool test suite', () => {
         expect(passwordParts[0]).toBe('ENCRYPTED');
         expect(hexReg.test(passwordParts[1])).toBeTruthy();
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
-        done();
     });
 
-    it('tests a successful command line file encryption with a hex key and default patterns', async (done) => {
+    it('tests a successful command line file encryption with a hex key and default patterns', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const oh = require('@tsmx/object-hmac');
         const originalConfig = require('./testfiles/config.json');
@@ -280,10 +261,9 @@ describe('secure-config-tool test suite', () => {
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
-        done();
     });
 
-    it('tests a successful command line file encryption with a hex key and custom patterns', async (done) => {
+    it('tests a successful command line file encryption with a hex key and custom patterns', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const oh = require('@tsmx/object-hmac');
         const originalConfig = require('./testfiles/config.json');
@@ -312,20 +292,18 @@ describe('secure-config-tool test suite', () => {
         expect(hexReg.test(passwordParts[2])).toBeTruthy();
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
-        done();
     });
 
-    it('tests a successful command line file encryption without HMAC generation', async (done) => {
+    it('tests a successful command line file encryption without HMAC generation', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const createFile = require('../functions/create-file');
         createFile('./test/testfiles/config.json', { nohmac: true });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson['__hmac']).toBeUndefined();
-        done();
     });
 
-    it('tests a successful command line file encryption with a custom HMAC property', async (done) => {
+    it('tests a successful command line file encryption with a custom HMAC property', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const oh = require('@tsmx/object-hmac');
         const originalConfig = require('./testfiles/config.json');
@@ -337,10 +315,9 @@ describe('secure-config-tool test suite', () => {
         expect(encryptedJson).toBeDefined();
         expect(encryptedJson['_signature']).toBeDefined();
         expect(encryptedJson['_signature']).toStrictEqual(expectedHmac);
-        done();
     });
 
-    it('tests a successful command line processing without any encryption but HMAC generation with a hex key', async (done) => {
+    it('tests a successful command line processing without any encryption but HMAC generation with a hex key', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const oh = require('@tsmx/object-hmac');
         const originalConfig = require('./testfiles/config.json');
@@ -359,10 +336,9 @@ describe('secure-config-tool test suite', () => {
         expect(encryptedJson.database.password).toStrictEqual(unencryptedPassword);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
-        done();
     });
 
-    it('tests a failed command line file encryption because of a missing key', async (done) => {
+    it('tests a failed command line file encryption because of a missing key', () => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const createFile = require('../functions/create-file');
@@ -371,7 +347,6 @@ describe('secure-config-tool test suite', () => {
         }).toThrow();
         expect(mockExit).toHaveBeenCalledWith(-1);
         mockExit.mockRestore();
-        done();
     });
 
 });
