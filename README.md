@@ -35,9 +35,9 @@ Reads an existing JSON configuration file and encrypts the values according to s
 
 The result is printed to stdout, so use `>` to save it in a new file.
 
-#### -p, --paterns
+#### -p, --patterns
 
-Specifies the patterns for the keys of the configuration file that should be encrypted.
+Specifies the patterns for the keys of the configuration file that should be encrypted. Pattern matching is done for every key of the provided JSON input with a case-insensitive RegEx validation. If the match succeeds, the value of the key is encrypted.
 
 ```
 [tsmx@localhost ]$ secure-config-tool create-file -p "Username,Password" ./config.json > config-production.json
@@ -45,7 +45,7 @@ Specifies the patterns for the keys of the configuration file that should be enc
 
 In the example stated above every key is tested case-insensitive against the two regex expressions `/Username/` and `/Password/`.
 
-If no patterns are specified using the `-p` / `--patterns` option, the standard patterns are used: `'user', 'pass', 'token'`. For each pattern a case-insensitive match is tested for each key of the JSON file to be encrypted. If the match succeeds, the value of the key is encrypted.
+If no patterns are specified using the `-p` / `--patterns` option, the standard patterns are used: `'user', 'pass', 'token'`. 
 
 ```
 [tsmx@localhost ]$ secure-config-tool create-file ./config.json > config-production.json
