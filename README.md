@@ -25,7 +25,7 @@ Features:
 [tsmx@localhost ]$ npm i -g @tsmx/secure-config-tool
 ```
 
-For better convenience I recommend the installation as a global package. Though local installation and use is also possible.
+For better convenience the installation as a global package is recommended. Though local installation and use is also possible.
 
 ## Arguments
 
