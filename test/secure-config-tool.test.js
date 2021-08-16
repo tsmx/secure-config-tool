@@ -203,7 +203,7 @@ describe('secure-config-tool main test suite', () => {
     it('tests a successful command line file encryption without HMAC generation', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { nohmac: true });
+        createFile('./test/testfiles/config.json', { hmac: false });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson['__hmac']).toBeUndefined();
@@ -215,7 +215,7 @@ describe('secure-config-tool main test suite', () => {
         const originalConfig = require('./testfiles/config.json');
         const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { hmacprop: '_signature' });
+        createFile('./test/testfiles/config.json', { hmacProp: '_signature' });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson).toBeDefined();
@@ -229,7 +229,7 @@ describe('secure-config-tool main test suite', () => {
         const originalConfig = require('./testfiles/config.json');
         const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { noencryption: true });
+        createFile('./test/testfiles/config.json', { encryption: false });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson).toBeDefined();

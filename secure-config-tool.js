@@ -12,9 +12,9 @@ program
     .command('create <config-file>')
     .description('Creates a secure-config out of an existing JSON configuration file.')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
-    .option('-ne, --noencryption', 'don\'t encrypt any configuration value, e.g. if you only want to use the HMAC feature')
-    .option('-nh, --nohmac', 'don\'t generate a HMAC for the configuration')
-    .option('-hp, --hmacprop <hmac-prop>', 'custom name of the property to store the HMAC in, default is \'__hmac\'')
+    .option('-ne, --no-encryption', 'don\'t encrypt any configuration value, e.g. if you only want to use the HMAC feature')
+    .option('-nh, --no-hmac', 'don\'t generate a HMAC for the configuration')
+    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the property to store the HMAC in, default is \'__hmac\'')
     .action(createFile)
     .addHelpText('after', createHelpText);
 

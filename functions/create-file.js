@@ -35,15 +35,15 @@ module.exports = function (file, options) {
     };
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
-    if (!options || (options && options.nohmac !== true)) {
-        if (options && options.hmacprop) {
-            oh.createHmac(config, key, options.hmacprop);
+    if (!options || (options && options.hmac !== false)) {
+        if (options && options.hmacProp) {
+            oh.createHmac(config, key, options.hmacProp);
         }
         else {
             oh.createHmac(config, key);
         }
     }
-    if (!options || (options && options.noencryption !== true)) {
+    if (!options || (options && options.encryption !== false)) {
         jt.traverse(config, callbacks, true);
     }
     console.log(JSON.stringify(config, null, 2));
