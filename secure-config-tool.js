@@ -10,7 +10,7 @@ const { createHelpText, genkeyHelpText, encryptHelpText, decryptHelpText } = req
 
 program
     .command('create <config-file>')
-    .description('Creates a secure-config out of an existing JSON configuration file.')
+    .description('create a secure-config out of an existing JSON configuration file')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
     .option('-ne, --no-encryption', 'don\'t encrypt any configuration value, e.g. if you only want to use the HMAC feature')
     .option('-nh, --no-hmac', 'don\'t generate a HMAC for the configuration')
@@ -20,20 +20,20 @@ program
 
 program
     .command('genkey')
-    .description('Generates a 32 byte AES key for encrypting/decrypting values for secure-config and returns the hex string.')
+    .description('generate a 32 byte AES key for encrypting/decrypting values and returns the hex string')
     .action(createKey)
     .addHelpText('after', genkeyHelpText);
 
 program
     .command('encrypt <secret>')
-    .description('Encrypts a secret for a secure-config configuration.')
+    .description('encrypt a single secret string for a secure-config configuration')
     .option('-v, --verbose', 'verbose output')
     .action(encryptSecret)
     .addHelpText('after', encryptHelpText);
 
 program
     .command('decrypt <secret>')
-    .description('Decrypts an encrypted entry for secure-config for testing/validation purposes.')
+    .description('decrypt an encrypted entry of a secure-config for testing/validation purposes')
     .option('-v, --verbose', 'verbose output')
     .action(decryptSecret)
     .addHelpText('after', decryptHelpText);
