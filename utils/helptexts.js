@@ -18,6 +18,11 @@ Generate a secure-config with custom encryption patterns 'user, 'api' and 'url' 
 $ secure-config-tool create -hp "_signature" -p "user,api,url" config.json > config-production.json
 `;
 
+module.exports.testHelpText = `
+Examples:
+$ secure-config-tool test ./config.json
+`;
+
 module.exports.genkeyHelpText = `
 Examples:
 $ secure-config-tool genkey
