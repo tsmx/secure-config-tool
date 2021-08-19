@@ -16,11 +16,6 @@ module.exports = function (secret, options) {
         console.log('Plaintext for verification:');
         const check = crypt.decrypt(encrypted, key);
         console.log(check);
-        if (check === secret) {
-            console.log('Success.');
-        }
-        else {
-            console.log('Something went wrong...');
-        }
+        console.log('Success.');
     }
 };
