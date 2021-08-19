@@ -1,7 +1,7 @@
 const fs = require('fs');
 const jt = require('@tsmx/json-traverse');
 const oh = require('@tsmx/object-hmac');
-const crypt = require('../utils/crypt');
+const cryptUtils = require('../utils/crypt');
 
 function logTestResults(decryptionResult, hmacResult) {
     console.log('Decryption: ' + decryptionResult);
@@ -13,7 +13,7 @@ module.exports = function (file, options) {
     let hmacResult = 'not tested';
     let configKey = null;
     try {
-        configKey = crypt.retrieveKey();
+        configKey = cryptUtils.retrieveKey();
     }
     catch (error) {
         console.log(error.message);
@@ -32,30 +32,23 @@ module.exports = function (file, options) {
     }
     if (options && options.verbose) {
         console.log('Raw configuration data:')
-        console.log(config);
+        console.log(JSON.stringify(config, null, 2));
     }
     const callbacks = {
         processValue: (key, value, level, path, isObjectRoot, isArrayElement, cbSetValue) => {
-            if (!isArrayElement && value && value.toString().startsWith(crypt.ENCRYPTION_PREFIX)) {
-                cbSetValue(crypt.decrypt(value, configKey));
+            if (!isArrayElement && value && value.toString().startsWith(cryptUtils.ENCRYPTION_PREFIX)) {
+                cbSetValue(cryptUtils.decrypt(value, configKey));
             }
         }
     };
-    try {
-        jt.traverse(config, callbacks, true);
-        decryptionResult = 'PASSED';
-    }
-    catch (error) {
-        console.log(error.message);
-        logTestResults(decryptionResult, hmacResult);
-        process.exit(-1);
-    }
+    jt.traverse(config, callbacks, true);
+    decryptionResult = 'PASSED';
     if (options && options.verbose) {
         console.log('Decrypted configuration data:')
-        console.log(config);
+        console.log(JSON.stringify(config, null, 2));
     }
-    if (options && !options.skipHmac) {
-        if (options.hmacProp) {
+    if (!options || (options && !options.skipHmac)) {
+        if (options && options.hmacProp) {
             hmacResult = oh.verifyHmac(config, configKey, options.hmacProp) ? 'PASSED' : 'FAILED';
         }
         else {

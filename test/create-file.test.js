@@ -1,9 +1,10 @@
+const { verifyEncryptedJson, verifyUnencryptedJson, verifyEncryptedValue } = require('./test-utils');
+
 describe('secure-config-tool create-file test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
     const testConsoleLog = (output) => { testOutput.push(output) };
-    const hexReg = new RegExp('^[0-9A-F]*$', 'i');
 
     const unencryptedHost = '127.0.0.1';
     const unencryptedUsername = 'SecretDbUser';
@@ -30,24 +31,7 @@ describe('secure-config-tool create-file test suite', () => {
         createFile('./test/testfiles/config.json');
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
-        expect(encryptedJson).toBeDefined();
-        expect(encryptedJson.database).toBeDefined();
-        expect(encryptedJson.database.host).toBeDefined();
-        expect(encryptedJson.database.host).toBe(unencryptedHost);
-        expect(encryptedJson.database.username).toBeDefined();
-        expect(encryptedJson.database.username).not.toBe(unencryptedUsername);
-        let usenameParts = encryptedJson.database.username.split('|');
-        expect(usenameParts.length).toBe(3);
-        expect(usenameParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(usenameParts[1])).toBeTruthy();
-        expect(hexReg.test(usenameParts[2])).toBeTruthy();
-        expect(encryptedJson.database.password).toBeDefined();
-        expect(encryptedJson.database.password).not.toBe(unencryptedPassword);
-        let passwordParts = encryptedJson.database.password.split('|');
-        expect(passwordParts.length).toBe(3);
-        expect(passwordParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(passwordParts[1])).toBeTruthy();
-        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        verifyEncryptedJson(encryptedJson);
     });
 
     it('tests a successful command line file encryption with a hex key and default patterns', () => {
@@ -59,24 +43,7 @@ describe('secure-config-tool create-file test suite', () => {
         createFile('./test/testfiles/config.json');
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
-        expect(encryptedJson).toBeDefined();
-        expect(encryptedJson.database).toBeDefined();
-        expect(encryptedJson.database.host).toBeDefined();
-        expect(encryptedJson.database.host).toBe(unencryptedHost);
-        expect(encryptedJson.database.username).toBeDefined();
-        expect(encryptedJson.database.username).not.toBe(unencryptedUsername);
-        let usenameParts = encryptedJson.database.username.split('|');
-        expect(usenameParts.length).toBe(3);
-        expect(usenameParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(usenameParts[1])).toBeTruthy();
-        expect(hexReg.test(usenameParts[2])).toBeTruthy();
-        expect(encryptedJson.database.password).toBeDefined();
-        expect(encryptedJson.database.password).not.toBe(unencryptedPassword);
-        let passwordParts = encryptedJson.database.password.split('|');
-        expect(passwordParts.length).toBe(3);
-        expect(passwordParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(passwordParts[1])).toBeTruthy();
-        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        verifyEncryptedJson(encryptedJson);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
@@ -93,21 +60,11 @@ describe('secure-config-tool create-file test suite', () => {
         expect(encryptedJson).toBeDefined();
         expect(encryptedJson.database).toBeDefined();
         expect(encryptedJson.database.host).toBeDefined();
-        expect(encryptedJson.database.host).not.toBe(unencryptedHost);
-        let hostParts = encryptedJson.database.host.split('|');
-        expect(hostParts.length).toBe(3);
-        expect(hostParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(hostParts[1])).toBeTruthy();
-        expect(hexReg.test(hostParts[2])).toBeTruthy();
+        verifyEncryptedValue(encryptedJson.database.host, unencryptedHost);
         expect(encryptedJson.database.username).toBeDefined();
         expect(encryptedJson.database.username).toBe(unencryptedUsername);
         expect(encryptedJson.database.password).toBeDefined();
-        expect(encryptedJson.database.password).not.toBe(unencryptedPassword);
-        let passwordParts = encryptedJson.database.password.split('|');
-        expect(passwordParts.length).toBe(3);
-        expect(passwordParts[0]).toBe('ENCRYPTED');
-        expect(hexReg.test(passwordParts[1])).toBeTruthy();
-        expect(hexReg.test(passwordParts[2])).toBeTruthy();
+        verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
@@ -143,17 +100,10 @@ describe('secure-config-tool create-file test suite', () => {
         const createFile = require('../functions/create-file');
         createFile('./test/testfiles/config.json', { encryption: false });
         expect(testOutput.length).toBe(1);
-        let encryptedJson = JSON.parse(testOutput[0]);
-        expect(encryptedJson).toBeDefined();
-        expect(encryptedJson.database).toBeDefined();
-        expect(encryptedJson.database.host).toBeDefined();
-        expect(encryptedJson.database.host).toStrictEqual(unencryptedHost);
-        expect(encryptedJson.database.username).toBeDefined();
-        expect(encryptedJson.database.username).toStrictEqual(unencryptedUsername);
-        expect(encryptedJson.database.password).toBeDefined();
-        expect(encryptedJson.database.password).toStrictEqual(unencryptedPassword);
-        expect(encryptedJson['__hmac']).toBeDefined();
-        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
+        let unencryptedJson = JSON.parse(testOutput[0]);
+        verifyUnencryptedJson(unencryptedJson);
+        expect(unencryptedJson['__hmac']).toBeDefined();
+        expect(unencryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
 
     it('tests a failed command line file encryption because of a missing key', () => {
