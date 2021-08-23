@@ -17,7 +17,7 @@ Features:
 
 ## Basic usage
 
-![Usage GIF](https://tsmx.net/wp-content/uploads/2021/08/secure-config-tool-2.gif)
+![Usage GIF](https://tsmx.net/wp-content/uploads/2021/08/secure-config-tool-2-usage.gif)
 
 ## Installation
 
@@ -122,5 +122,3 @@ MySecret
 npm install
 npm test
 ```
-
-.
