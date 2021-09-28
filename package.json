@@ -1,7 +1,7 @@
 {
     "name": "@tsmx/secure-config-tool",
     "version": "2.0.0",
-    "description": "Command-line tool for handling secure-config files and entries.",
+    "description": "Command-line tool for @tsmx/secure-config.",
     "main": "secure-config-tool.js",
     "author": "tsmx <dev@tsmx.net>",
     "license": "MIT",
