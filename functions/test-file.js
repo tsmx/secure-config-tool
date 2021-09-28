@@ -41,7 +41,14 @@ module.exports = function (file, options) {
             }
         }
     };
-    jt.traverse(config, callbacks, true);
+    try {
+        jt.traverse(config, callbacks, true);
+    }
+    catch (error) {
+        console.log(error.message);
+        logTestResults(decryptionResult, hmacResult);
+        process.exit(-1);
+    }
     decryptionResult = 'PASSED';
     if (options && options.verbose) {
         console.log('Decrypted configuration data:')

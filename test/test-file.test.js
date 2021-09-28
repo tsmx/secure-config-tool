@@ -7,6 +7,7 @@ describe('secure-config-tool test-file test suite', () => {
     const testConsoleLog = (output) => { testOutput.push(output) };
 
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
+    const TEST_KEY_HEX_WRONG = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593b000';
     const TEST_KEY_HEX_BROKEN = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bxxx';
 
     beforeEach(() => {
@@ -72,8 +73,20 @@ describe('secure-config-tool test-file test suite', () => {
         mockExit.mockRestore();
     });
 
-    it('tests a failed file test because of a wrong key', () => {
+    it('tests a failed file test because of a broken key (key not valid)', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX_BROKEN;
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        const testFile = require('../functions/test-file');
+        expect(() => {
+            testFile('./test/testfiles/config-test.json');
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
+    });
+
+    it('tests a failed file test because of a wrong key (key was not used for encryption)', () => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX_WRONG;
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const testFile = require('../functions/test-file');
