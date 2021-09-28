@@ -3,6 +3,8 @@ const sc = require('@tsmx/string-crypto');
 
 const prefix = 'ENCRYPTED|';
 
+module.exports.ENCRYPTION_PREFIX = prefix;
+
 module.exports.retrieveKey = function (verbose = false) {
     const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
     let result = null;

@@ -9,14 +9,15 @@
 > Supporting command-line tool for [@tsmx/secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
 Features:
-- generating keys
-- encrypting values in existing configuration files 
-- encrypting single secrets
-- decrypting single secrets (for validation/testing purposes)
+- create secure configurations with encrypted secrets and a HMAC out of existing JSON files
+- test existing secure configuration JSON files (HMAC validation & decryption)
+- generate keys 
+- encrypt single secrets for copy & paste into existing configurations
+- decrypt single secrets for testing purposes
 
-## Usage
+## Basic usage
 
-![Usage GIF](https://tsmx.net/wp-content/uploads/2020/11/secure-config-tool-fast.gif)
+![Usage GIF](https://tsmx.net/wp-content/uploads/2021/08/secure-config-tool-2-usage.gif)
 
 ## Installation
 
@@ -24,9 +25,72 @@ Features:
 [tsmx@localhost ]$ npm i -g @tsmx/secure-config-tool
 ```
 
-For better convenience I recommend the installation as a global package. Though local installation and use is also possible.
+For better convenience the installation as a global package is recommended. Though local installation and use is also possible.
 
-## Key generation
+## Arguments
+
+### create
+
+Read an existing JSON configuration file and encrypt the values according to specified key-patterns. Also adds a HMAC property to the JSON configuration for enabling validation against illegal tampering.
+
+The result is printed to stdout, use `>` to save it in a new file.
+
+The key used to create the secure configuration has to be set as environment variable `CONFIG_ENCRYPTION_KEY`. See [genkey option](#genkey) on how to create and export a secure key.
+
+```
+[tsmx@localhost ]$ secure-config-tool create ./config.json > config-production.json
+```
+
+#### -p, --patterns
+
+A comma-separated list of patterns for the keys of the configuration file that should be encrypted. Pattern matching is done for every key of the provided JSON input with a case-insensitive RegEx validation. If the match succeeds, the value of the key is encrypted.
+
+```
+[tsmx@localhost ]$ secure-config-tool create -p "Username,Password" ./config.json > config-production.json
+```
+
+In the example stated above every key is tested case-insensitive against the two regex expressions `/Username/` and `/Password/`.
+
+If no patterns are explicitly specified by using this option, the standard patterns are used: `'user', 'pass', 'token'`. 
+
+#### -ne, --no-encrpytion
+
+Do not encrypt any value of the input file. Helpful if you want to use only the HMAC feature withput any encryption.
+
+#### -nh, --no-hmac
+
+Do not create and add the configurations HMAC to the output. Helpful if you only want to use encryption without HMAC.
+
+#### -hp, --hmac-prop
+
+Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-nh` is specified at the same time.  
+
+### test
+
+Test decryption and HMAC validation of an existing secure-configuration file. The key to test against has to be set as environment variable `CONFIG_ENCRYPTION_KEY`.
+
+```
+[tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=9af7...
+[tsmx@localhost ]$ secure-config-tool test config-production.json 
+Decryption: PASSED
+HMAC:       PASSED
+```
+
+#### -hp, --hmac-prop
+
+Specify the property name og the HMAC value to validate against. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-sh` is specified at the same time.
+
+#### -sh, --skip-hmac
+
+Skip the HMAC validation test.
+
+#### -v, --verbose
+
+Print out the the raw input data and the decrypted data. 
+
+### genkey
+
+Generate a cryptographic 32 byte key to be used for AES encryption/decryption as well as HMAC validation of your configuration. 
 
 ```
 [tsmx@localhost ]$ secure-config-tool genkey
@@ -34,43 +98,23 @@ For better convenience I recommend the installation as a global package. Though 
 [tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f
 ```
 
-## Encrypt files
+### encrypt
 
-Reads an existing JSON configuration file and encrypts the values according to specified key-patterns. The result is printed to stdout, so use `>` to save it in a new file.
-
-### Using standard encryption patterns
+Encrypt a single value string for copy & paste to a JSON configuration file.
 
 ```
-[tsmx@localhost ]$ secure-config-tool create-file ./config.json > config-production.json
-```
-
-If no patterns are specified using the `-p` / `--patterns` option, the standard patterns are used: `'user', 'pass', 'token'`. For each pattern a case-insensitive match is tested for each key of the JSON file to be encrypted. If the match succeeds, the value of the key is encrypted.
-
-### Using custom encryption patterns
-
-```
-[tsmx@localhost ]$ secure-config-tool create-file -p "Username,Password" ./config.json > config-production.json
-```
-
-Same as above, but your custom patterns are used. In the example every key is tested case-insensitive against the two regex expressions `/Username/` and `/Password/`.
-
-## Encrypt values
-
-```
-[tsmx@localhost ]$ secure-config-tool create --secret MySecret
+[tsmx@localhost ]$ secure-config-tool encrypt "MySecret"
 ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f
 ```
 
-Encrypts a single value string for copy & paste to a JSON configuration file.
+### decrypt
 
-## Decrypt values
+Decrypt a single value string for testing purposes.
 
 ```
 [tsmx@localhost ]$ secure-config-tool decrypt "ENCRYPTED|82da1c22e867d68007d66a23b7b748b3|452a2ed1105ec5607576b820b90aa49f"
 MySecret
 ```
-
-Decrypts a single value string for testing purposes.
 
 ## Test
 
