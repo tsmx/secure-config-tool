@@ -2,6 +2,7 @@
 
 var { program } = require('commander');
 const createFile = require('./functions/create-file');
+const updateHmac = require('./functions/update-hmac');
 const testFile = require('./functions/test-file');
 const createKey = require('./functions/create-key');
 const encryptSecret = require('./functions/encrypt-secret');
@@ -17,6 +18,13 @@ program
     .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the property to store the HMAC in, default is \'__hmac\'')
     .action(createFile)
     .addHelpText('after', helpTexts.createHelpText);
+
+program
+    .command('update-hmac <config-file>')
+    .description('update the HMAC of an existing secure-config configuration file')
+    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated, default is \'__hmac\'')
+    .action(updateHmac)
+    .addHelpText('after', helpTexts.updateHelpText);
 
 program
     .command('test <config-file>')

@@ -1,20 +1,20 @@
-const crypt = require('../utils/crypt');
+const cryptUtils = require('../utils/crypt');
 
 module.exports = function (secret, options) {
     const verbose = options && options.verbose;
     let key = null;
     try {
-        key = crypt.retrieveKey(verbose);
+        key = cryptUtils.retrieveKey(verbose);
     }
     catch (error) {
         console.log(error.message);
         process.exit(-1);
     }
-    const encrypted = crypt.encrypt(secret, key);
+    const encrypted = cryptUtils.encrypt(secret, key);
     console.log(encrypted);
     if (verbose) {
         console.log('Plaintext for verification:');
-        const check = crypt.decrypt(encrypted, key);
+        const check = cryptUtils.decrypt(encrypted, key);
         console.log(check);
         console.log('Success.');
     }

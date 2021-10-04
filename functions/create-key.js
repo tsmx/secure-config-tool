@@ -1,5 +1,5 @@
-const crypt = require('../utils/crypt');
+const cryptUtils = require('../utils/crypt');
 
 module.exports = function () {
-    console.log(crypt.genkey());
+    console.log(cryptUtils.genkey());
 };

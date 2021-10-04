@@ -1,12 +1,12 @@
-const crypt = require('../utils/crypt');
+const cryptUtils = require('../utils/crypt');
 
 module.exports = function (secret, options) {
     const verbose = options && options.verbose;
     let key = null;
     let decrypted = null;
     try {
-        key = crypt.retrieveKey(verbose);
-        decrypted = crypt.decrypt(secret, key);
+        key = cryptUtils.retrieveKey(verbose);
+        decrypted = cryptUtils.decrypt(secret, key);
     }
     catch (error) {
         console.log(error.message);

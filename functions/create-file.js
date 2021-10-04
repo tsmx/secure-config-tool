@@ -1,7 +1,7 @@
 const fs = require('fs');
 const jt = require('@tsmx/json-traverse');
 const oh = require('@tsmx/object-hmac');
-const crypt = require('../utils/crypt');
+const cryptUtils = require('../utils/crypt');
 
 const defaultSecretPatterns = ['user', 'pass', 'token'];
 
@@ -13,9 +13,9 @@ function patternMatch(value, patterns) {
 }
 
 module.exports = function (file, options) {
-    let key = null;
+    let configKey = null;
     try {
-        key = crypt.retrieveKey();
+        configKey = cryptUtils.retrieveKey();
     }
     catch (error) {
         console.log(error.message);
@@ -27,9 +27,9 @@ module.exports = function (file, options) {
         patternArray = patternArray.map(item => item.trim());
     }
     const callbacks = {
-        processValue: (propKey, propValue, level, path, isObjectRoot, isArrayElement, cbSetValue) => {
-            if (patternMatch(propKey, patternArray)) {
-                cbSetValue(crypt.encrypt(propValue, key.toString()));
+        processValue: (key, value, level, path, isObjectRoot, isArrayElement, cbSetValue) => {
+            if (patternMatch(key, patternArray)) {
+                cbSetValue(cryptUtils.encrypt(value, configKey.toString()));
             }
         }
     };
@@ -37,10 +37,10 @@ module.exports = function (file, options) {
     let config = JSON.parse(configFile);
     if (!options || (options && options.hmac !== false)) {
         if (options && options.hmacProp) {
-            oh.createHmac(config, key, options.hmacProp);
+            oh.createHmac(config, configKey, options.hmacProp);
         }
         else {
-            oh.createHmac(config, key);
+            oh.createHmac(config, configKey);
         }
     }
     if (!options || (options && options.encryption !== false)) {
