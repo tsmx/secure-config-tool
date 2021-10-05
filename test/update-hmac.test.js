@@ -17,7 +17,18 @@ describe('secure-config-tool update-hmac test suite', () => {
                 cbSetValue(cryptUtils.decrypt(value, TEST_KEY_HEX));
             }
         }
-    };
+    }
+
+    const expectedConfig =
+    {
+        "database": {
+            "host": "127.0.0.1",
+            "username": "ENCRYPTED|a8c967bcf71a65fdeb29c6d965059fbf|04262ca07306dd7883c1c352a7083346",
+            "password": "ENCRYPTED|acbdb333085cb712c514510b44fe78ff|5da8a72455986edc61e36b38d8660a4849d263577c5a9f4ccaff57bd6d8e35ee",
+            "port": 1521
+        },
+        "__hmac": "38ba13feaab8cbdb790bb6aafd4b18b813bbee9b36cd10d314d1306ff1454dc2"
+    }
 
     beforeEach(() => {
         delete process.env['CONFIG_ENCRYPTION_KEY'];
@@ -43,9 +54,12 @@ describe('secure-config-tool update-hmac test suite', () => {
         expect(updatedJson.database.pass).toStrictEqual(originalJson.database.pass);
         expect(updatedJson.database.port).toStrictEqual(originalJson.database.port);
         expect(updatedJson['__hmac']).not.toStrictEqual(originalJson['__hmac']);
+        // check against new HAMC caluclatio on-the-fly
         jt.traverse(originalJson, cbDecrypt, true);
         delete originalJson['__hmac'];
         expect(updatedJson['__hmac']).toStrictEqual(oh.calculateHmac(originalJson, TEST_KEY_HEX));
+        // double-check against pre.calculated HMAC
+        expect(updatedJson['__hmac']).toStrictEqual(expectedConfig['__hmac']);
     });
 
     it('tests a successful HMAC update with a custom HMAC property', () => {
@@ -82,13 +96,13 @@ describe('secure-config-tool update-hmac test suite', () => {
     });
 
     it('test a successful HMAC update with overwriting the existing file', () => {
-        const expectedConfig = JSON.stringify(JSON.parse(fs.readFileSync('./test/testfiles/config-hmac-update-ok.json')), null, 2);
+        const result = JSON.stringify(expectedConfig, null, 2);
         const mockFileWrite = jest.spyOn(fs, 'writeFileSync')
             .mockImplementation((file, data) => { });
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const updateHmac = require('../functions/update-hmac');
         updateHmac('./test/testfiles/config-hmac-update.json', { overwrite: true });
-        expect(mockFileWrite).toHaveBeenCalledWith('./test/testfiles/config-hmac-update.json', expectedConfig);
+        expect(mockFileWrite).toHaveBeenCalledWith('./test/testfiles/config-hmac-update.json', result);
     });
 
 });
