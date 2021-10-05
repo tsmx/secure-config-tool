@@ -16,6 +16,8 @@ Features:
 - encrypt single secrets for copy & paste into existing configurations
 - decrypt single secrets for testing purposes
 
+To get more information please also check out the [secure-config documentation](https://tsmx.net/secure-config/).
+
 ## Basic usage
 
 ![Usage GIF](https://tsmx.net/wp-content/uploads/2021/08/secure-config-tool-2-usage.gif)
