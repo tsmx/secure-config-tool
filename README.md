@@ -10,7 +10,7 @@
 
 Features:
 - create secure configurations with encrypted secrets and a HMAC out of existing JSON files
-- update HMAC values of existing configuration files after they have changed
+- update HMAC values of existing secure configuration files after they have changed
 - test existing secure configuration JSON files (HMAC validation & decryption)
 - generate keys 
 - encrypt single secrets for copy & paste into existing configurations
@@ -68,7 +68,7 @@ Specify a property name to store the generated HMAC value in. Defaults to `__hma
 
 ### update-hmac
 
-Updates the HMAC of an existing configuration file after it has been changed (properties added/deleted/changed...).
+Updates the HMAC of an existing secure configuration file after it has been changed (properties added/deleted/changed...).
 
 The result is printed to stdout. Use `>` to save it in a new file or the `--overwrite` option.
 
