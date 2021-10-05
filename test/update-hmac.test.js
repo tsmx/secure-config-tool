@@ -70,7 +70,7 @@ describe('secure-config-tool update-hmac test suite', () => {
         expect(updatedJson[customProp]).toStrictEqual(oh.calculateHmac(originalJson, TEST_KEY_HEX));
     });
 
-    it('tests a failed file HMAC update because of a missing key', () => {
+    it('tests a failed HMAC update because of a missing key', () => {
         const mockExit = jest.spyOn(process, 'exit')
             .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
         const updateHmac = require('../functions/update-hmac');
@@ -79,6 +79,16 @@ describe('secure-config-tool update-hmac test suite', () => {
         }).toThrow();
         expect(mockExit).toHaveBeenCalledWith(-1);
         mockExit.mockRestore();
+    });
+
+    it('test a successful HMAC update with overwriting the existing file', () => {
+        const expectedConfig = JSON.stringify(JSON.parse(fs.readFileSync('./test/testfiles/config-hmac-update-ok.json')), null, 2);
+        const mockFileWrite = jest.spyOn(fs, 'writeFileSync')
+            .mockImplementation((file, data) => { });
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const updateHmac = require('../functions/update-hmac');
+        updateHmac('./test/testfiles/config-hmac-update.json', { overwrite: true });
+        expect(mockFileWrite).toHaveBeenCalledWith('./test/testfiles/config-hmac-update.json', expectedConfig);
     });
 
 });

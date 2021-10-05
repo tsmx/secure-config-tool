@@ -1,0 +1,9 @@
+{
+  "database": {
+    "host": "127.0.0.1",
+    "username": "ENCRYPTED|a8c967bcf71a65fdeb29c6d965059fbf|04262ca07306dd7883c1c352a7083346",
+    "password": "ENCRYPTED|acbdb333085cb712c514510b44fe78ff|5da8a72455986edc61e36b38d8660a4849d263577c5a9f4ccaff57bd6d8e35ee",
+    "port": 1521
+  },
+  "__hmac": "38ba13feaab8cbdb790bb6aafd4b18b813bbee9b36cd10d314d1306ff1454dc2"
+}

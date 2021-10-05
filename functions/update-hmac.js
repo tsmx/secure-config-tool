@@ -46,5 +46,11 @@ module.exports = function (file, options) {
         oh.createHmac(config, configKey);
     }
     jt.traverse(config, cbRestoreEncryption, true);
-    console.log(JSON.stringify(config, null, 2));
+    const result = JSON.stringify(config, null, 2);
+    if (options && options.overwrite === true) {
+        fs.writeFileSync(file, result);
+    }
+    else {
+        console.log(result);
+    }
 };

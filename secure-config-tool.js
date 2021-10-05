@@ -22,6 +22,7 @@ program
 program
     .command('update-hmac <config-file>')
     .description('update the HMAC of an existing secure-config configuration file')
+    .option('-o, --overwrite', 'overwrite file directly instead of writing to stdout')
     .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated, default is \'__hmac\'')
     .action(updateHmac)
     .addHelpText('after', helpTexts.updateHelpText);
