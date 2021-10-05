@@ -10,6 +10,7 @@
 
 Features:
 - create secure configurations with encrypted secrets and a HMAC out of existing JSON files
+- update HMAC values of existing configuration files after they have changed
 - test existing secure configuration JSON files (HMAC validation & decryption)
 - generate keys 
 - encrypt single secrets for copy & paste into existing configurations
@@ -33,12 +34,12 @@ For better convenience the installation as a global package is recommended. Thou
 
 Read an existing JSON configuration file and encrypt the values according to specified key-patterns. Also adds a HMAC property to the JSON configuration for enabling validation against illegal tampering.
 
-The result is printed to stdout, use `>` to save it in a new file.
+The result is printed to stdout. Use `>` to save it in a new file.
 
 The key used to create the secure configuration has to be set as environment variable `CONFIG_ENCRYPTION_KEY`. See [genkey option](#genkey) on how to create and export a secure key.
 
 ```
-[tsmx@localhost ]$ secure-config-tool create ./config.json > config-production.json
+[tsmx@localhost ]$ secure-config-tool create config.json > config-production.json
 ```
 
 #### -p, --patterns
@@ -46,7 +47,7 @@ The key used to create the secure configuration has to be set as environment var
 A comma-separated list of patterns for the keys of the configuration file that should be encrypted. Pattern matching is done for every key of the provided JSON input with a case-insensitive RegEx validation. If the match succeeds, the value of the key is encrypted.
 
 ```
-[tsmx@localhost ]$ secure-config-tool create -p "Username,Password" ./config.json > config-production.json
+[tsmx@localhost ]$ secure-config-tool create -p "Username,Password" config.json > config-production.json
 ```
 
 In the example stated above every key is tested case-insensitive against the two regex expressions `/Username/` and `/Password/`.
@@ -64,6 +65,26 @@ Do not create and add the configurations HMAC to the output. Helpful if you only
 #### -hp, --hmac-prop
 
 Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-nh` is specified at the same time.  
+
+### update-hmac
+
+Updates the HMAC of an existing configuration file after it has been changed (properties added/deleted/changed...).
+
+The result is printed to stdout. Use `>` to save it in a new file or the `--overwrite` option.
+
+The key used to update the HMAC has to be set as environment variable `CONFIG_ENCRYPTION_KEY`. Make sure to use the right key which was used to create the already existing secure-config file.
+
+```
+[tsmx@localhost ]$ secure-config-tool update-hmac -o config-production.json
+```
+
+#### -o, --overwrite
+
+Overwrite the original configuration file with the updated HMAC instead of writing to stdout.
+
+#### -hp, --hmac-prop
+
+Use this option to specify the property name of the HMAC value to be updated if it is deviating from the default `__hmac`.
 
 ### test
 

@@ -10,6 +10,7 @@ describe('secure-config-tool update-hmac test suite', () => {
     const testConsoleLog = (output) => { testOutput.push(output) };
 
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
+    const TEST_KEY_HEX_WRONG = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593b000';
 
     const cbDecrypt = {
         processValue: (key, value, level, path, isObjectRoot, isArrayElement, cbSetValue) => {
@@ -103,6 +104,18 @@ describe('secure-config-tool update-hmac test suite', () => {
         const updateHmac = require('../functions/update-hmac');
         updateHmac('./test/testfiles/config-hmac-update.json', { overwrite: true });
         expect(mockFileWrite).toHaveBeenCalledWith('./test/testfiles/config-hmac-update.json', result);
+    });
+
+    it('tests a failed HMAC update because of a wrong key', () => {
+        const mockExit = jest.spyOn(process, 'exit')
+            .mockImplementation((number) => { throw new Error('process.exit: ' + number); });
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX_WRONG;
+        const updateHmac = require('../functions/update-hmac');
+        expect(() => {
+            updateHmac('./test/testfiles/config-hmac-update.json');
+        }).toThrow();
+        expect(mockExit).toHaveBeenCalledWith(-1);
+        mockExit.mockRestore();
     });
 
 });

@@ -36,7 +36,13 @@ module.exports = function (file, options) {
     }
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
-    jt.traverse(config, cbDecrypt, true);
+    try {
+        jt.traverse(config, cbDecrypt, true);
+    }
+    catch (error) {
+        console.log(error.message);
+        process.exit(-1);
+    }
     if (options && options.hmacProp) {
         delete config[options.hmacProp];
         oh.createHmac(config, configKey, options.hmacProp);

@@ -1,3 +1,5 @@
+const cryptUtils = require('../utils/crypt');
+
 describe('secure-config-tool decrypt test suite', () => {
 
     var testOutput = [];
@@ -7,8 +9,6 @@ describe('secure-config-tool decrypt test suite', () => {
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_SECRET = 'MySecret123$';
     const TEST_SECRET_ENCRYPTED = 'ENCRYPTED|f43fda7e3486b77a46b77b1c0b35e3db|9d329de17378813ffe21117360dfe3fa';
-    const DECRYPT_ERROR = 'Decryption failed. Please check that the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"\n' +
-        'Please see the docs under: https://github.com/tsmx/secure-config';
 
     beforeEach(() => {
         delete process.env['CONFIG_ENCRYPTION_KEY'];
@@ -50,7 +50,7 @@ describe('secure-config-tool decrypt test suite', () => {
         expect(mockExit).toHaveBeenCalledWith(-1);
         mockExit.mockRestore();
         expect(testOutput.length).toBe(1);
-        expect(testOutput[0]).toBe(DECRYPT_ERROR);
+        expect(testOutput[0]).toBe(cryptUtils.DECRYPTION_ERROR);
     });
 
     it('tests a failed command line secret decryption because of a missing key', () => {
