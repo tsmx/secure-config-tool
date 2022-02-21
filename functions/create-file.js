@@ -28,7 +28,7 @@ module.exports = function (file, options) {
     }
     const callbacks = {
         processValue: (key, value, level, path, isObjectRoot, isArrayElement, cbSetValue) => {
-            if (patternMatch(key, patternArray)) {
+            if (typeof value !== 'object' && patternMatch(key, patternArray)) {
                 cbSetValue(cryptUtils.encrypt(value, configKey.toString()));
             }
         }

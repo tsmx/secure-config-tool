@@ -9,6 +9,7 @@ describe('secure-config-tool create-file test suite', () => {
     const unencryptedHost = '127.0.0.1';
     const unencryptedUsername = 'SecretDbUser';
     const unencryptedPassword = 'SecretDbPassword';
+    const unencryptedDatabase = 'MyDB';
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
@@ -65,6 +66,29 @@ describe('secure-config-tool create-file test suite', () => {
         expect(encryptedJson.database.username).toBe(unencryptedUsername);
         expect(encryptedJson.database.password).toBeDefined();
         verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
+        expect(encryptedJson['__hmac']).toBeDefined();
+        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
+    });
+
+    it('tests a successful command line file encryption with a hex key and custom patterns and an ambiguous property name', () => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config-ambiguous-prop.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config-ambiguous-prop.json', { patterns: 'host,pass,database'});
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        verifyEncryptedValue(encryptedJson.database.host, unencryptedHost);
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).toBe(unencryptedUsername);
+        expect(encryptedJson.database.password).toBeDefined();
+        verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
+        expect(encryptedJson.database.database).toBeDefined();
+        verifyEncryptedValue(encryptedJson.database.database, unencryptedDatabase);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
