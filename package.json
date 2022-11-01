@@ -1,6 +1,6 @@
 {
     "name": "@tsmx/secure-config-tool",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "Command-line tool for @tsmx/secure-config.",
     "main": "secure-config-tool.js",
     "author": "tsmx <dev@tsmx.net>",
