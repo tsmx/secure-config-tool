@@ -4,7 +4,7 @@ describe('crypt utils test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
-    const testConsoleLog = (output) => { testOutput.push(output) };
+    const testConsoleLog = (output) => { testOutput.push(output); };
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
@@ -72,7 +72,7 @@ describe('crypt utils test suite', () => {
         const encrypted = cryptUtils.encrypt(TEST_SECRET, TEST_KEY);
         expect(encrypted).toBeDefined();
         let parts = encrypted.split('|');
-        expect(parts).toBeDefined()
+        expect(parts).toBeDefined();
         expect(parts.length).toBe(3);
         expect(parts[0]).toBe('ENCRYPTED');
         const decrypted = cryptUtils.decrypt(encrypted, TEST_KEY);

@@ -4,7 +4,7 @@ describe('secure-config-tool create-file test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
-    const testConsoleLog = (output) => { testOutput.push(output) };
+    const testConsoleLog = (output) => { testOutput.push(output); };
 
     const unencryptedHost = '127.0.0.1';
     const unencryptedUsername = 'SecretDbUser';

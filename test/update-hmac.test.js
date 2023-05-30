@@ -7,7 +7,7 @@ describe('secure-config-tool update-hmac test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
-    const testConsoleLog = (output) => { testOutput.push(output) };
+    const testConsoleLog = (output) => { testOutput.push(output); };
 
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
     const TEST_KEY_HEX_WRONG = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593b000';
@@ -18,18 +18,18 @@ describe('secure-config-tool update-hmac test suite', () => {
                 cbSetValue(cryptUtils.decrypt(value, TEST_KEY_HEX));
             }
         }
-    }
+    };
 
     const expectedConfig =
     {
-        "database": {
-            "host": "127.0.0.1",
-            "username": "ENCRYPTED|a8c967bcf71a65fdeb29c6d965059fbf|04262ca07306dd7883c1c352a7083346",
-            "password": "ENCRYPTED|acbdb333085cb712c514510b44fe78ff|5da8a72455986edc61e36b38d8660a4849d263577c5a9f4ccaff57bd6d8e35ee",
-            "port": 1521
+        'database': {
+            'host': '127.0.0.1',
+            'username': 'ENCRYPTED|a8c967bcf71a65fdeb29c6d965059fbf|04262ca07306dd7883c1c352a7083346',
+            'password': 'ENCRYPTED|acbdb333085cb712c514510b44fe78ff|5da8a72455986edc61e36b38d8660a4849d263577c5a9f4ccaff57bd6d8e35ee',
+            'port': 1521
         },
-        "__hmac": "38ba13feaab8cbdb790bb6aafd4b18b813bbee9b36cd10d314d1306ff1454dc2"
-    }
+        '__hmac': '38ba13feaab8cbdb790bb6aafd4b18b813bbee9b36cd10d314d1306ff1454dc2'
+    };
 
     beforeEach(() => {
         delete process.env['CONFIG_ENCRYPTION_KEY'];
@@ -99,7 +99,7 @@ describe('secure-config-tool update-hmac test suite', () => {
     it('test a successful HMAC update with overwriting the existing file', () => {
         const result = JSON.stringify(expectedConfig, null, 2);
         const mockFileWrite = jest.spyOn(fs, 'writeFileSync')
-            .mockImplementation((file, data) => { });
+            .mockImplementation((_file, _data) => { });
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const updateHmac = require('../functions/update-hmac');
         updateHmac('./test/testfiles/config-hmac-update.json', { overwrite: true });

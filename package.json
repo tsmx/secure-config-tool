@@ -44,6 +44,7 @@
         "AES"
     ],
     "devDependencies": {
+        "eslint": "^8.41.0",
         "jest": "^29.2.2"
     }
 }

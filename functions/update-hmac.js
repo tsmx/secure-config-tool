@@ -5,7 +5,7 @@ const cryptUtils = require('../utils/crypt');
 
 const createMapKey = (key, path) => {
     return path.join('|') + '|' + key;
-}
+};
 
 module.exports = function (file, options) {
     let configKey = null;
@@ -33,7 +33,7 @@ module.exports = function (file, options) {
                 cbSetValue(encryptedEntries.get(createMapKey(key, path)));
             }
         }
-    }
+    };
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
     try {

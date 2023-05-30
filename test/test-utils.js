@@ -23,8 +23,8 @@ module.exports.verifyEncryptedJson = function (encryptedJson) {
     expect(encryptedJson.database.username).toBeDefined();
     verifyEncryptedValue(encryptedJson.database.username, unencryptedUsername);
     expect(encryptedJson.database.password).toBeDefined();
-    verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword)
-}
+    verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
+};
 
 module.exports.verifyUnencryptedJson = function (unencryptedJson) {
     expect(unencryptedJson).toBeDefined();
@@ -35,4 +35,4 @@ module.exports.verifyUnencryptedJson = function (unencryptedJson) {
     expect(unencryptedJson.database.username).toStrictEqual(unencryptedUsername);
     expect(unencryptedJson.database.password).toBeDefined();
     expect(unencryptedJson.database.password).toStrictEqual(unencryptedPassword);
-}
+};

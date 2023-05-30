@@ -4,7 +4,7 @@ describe('secure-config-tool decrypt test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
-    const testConsoleLog = (output) => { testOutput.push(output) };
+    const testConsoleLog = (output) => { testOutput.push(output); };
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_SECRET = 'MySecret123$';

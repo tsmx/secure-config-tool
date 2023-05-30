@@ -2,7 +2,7 @@ describe('secure-config-tool key test suite', () => {
 
     var testOutput = [];
     const originalConsoleLog = console.log;
-    const testConsoleLog = (output) => { testOutput.push(output) };
+    const testConsoleLog = (output) => { testOutput.push(output); };
 
     beforeEach(() => {
         delete process.env['CONFIG_ENCRYPTION_KEY'];
