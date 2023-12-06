@@ -9,7 +9,7 @@ function logTestResults(decryptionResult, hmacResult) {
 }
 
 module.exports = function (file, options) {
-    let decryptionResult = 'FAILED';;
+    let decryptionResult = 'FAILED';
     let hmacResult = 'not tested';
     let configKey = null;
     try {
@@ -31,7 +31,7 @@ module.exports = function (file, options) {
         process.exit(-1);
     }
     if (options && options.verbose) {
-        console.log('Raw configuration data:')
+        console.log('Raw configuration data:');
         console.log(JSON.stringify(config, null, 2));
     }
     const callbacks = {
@@ -51,7 +51,7 @@ module.exports = function (file, options) {
     }
     decryptionResult = 'PASSED';
     if (options && options.verbose) {
-        console.log('Decrypted configuration data:')
+        console.log('Decrypted configuration data:');
         console.log(JSON.stringify(config, null, 2));
     }
     if (!options || (options && !options.skipHmac)) {
