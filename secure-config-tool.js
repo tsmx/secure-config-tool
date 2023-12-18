@@ -10,6 +10,10 @@ const decryptSecret = require('./functions/decrypt-secret');
 const helpTexts = require('./utils/helptexts');
 
 program
+    .description('Supporting command line tool for the @tsmx/secure-config npm package')
+    .version('2.2.1');
+
+program
     .command('create <config-file>')
     .description('Create a secure-config out of an existing JSON configuration file')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')

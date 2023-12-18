@@ -1,6 +1,6 @@
 {
     "name": "@tsmx/secure-config-tool",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Command-line tool for @tsmx/secure-config.",
     "main": "secure-config-tool.js",
     "author": "tsmx <dev@tsmx.net>",
@@ -25,7 +25,7 @@
         "@tsmx/json-traverse": "^1.0.2",
         "@tsmx/object-hmac": "^1.1.1",
         "@tsmx/string-crypto": "^1.0.2",
-        "commander": "^9.4.1"
+        "commander": "^11.1.0"
     },
     "keywords": [
         "secure-config",
