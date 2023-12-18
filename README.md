@@ -139,6 +139,12 @@ Decrypt a single value string for testing purposes.
 MySecret
 ```
 
+## Changelog
+
+### 2.2.0
+- Support for encrypted properties of objects in arrays added, e.g. `{  configArray: [ { key: 'ENCRYPTED|...' }, { key: 'ENCRYPTED|... ' } ] }`
+
+
 ## Test
 
 ```
