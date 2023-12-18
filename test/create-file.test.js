@@ -48,6 +48,7 @@ describe('secure-config-tool create-file test suite', () => {
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         verifyEncryptedJson(encryptedJson);
+        verifyUnencryptedJsonArray(encryptedJson);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
@@ -69,6 +70,33 @@ describe('secure-config-tool create-file test suite', () => {
         expect(encryptedJson.database.username).toBe(unencryptedUsername);
         expect(encryptedJson.database.password).toBeDefined();
         verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
+        verifyUnencryptedJsonArray(encryptedJson);
+        expect(encryptedJson['__hmac']).toBeDefined();
+        expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
+    });
+
+    it('tests a successful command line file encryption with a hex key and custom patterns and object array encryption', () => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const oh = require('@tsmx/object-hmac');
+        const originalConfig = require('./testfiles/config.json');
+        const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
+        const createFile = require('../functions/create-file');
+        createFile('./test/testfiles/config.json', { patterns: 'host,pass,itemkey' });
+        expect(testOutput.length).toBe(1);
+        let encryptedJson = JSON.parse(testOutput[0]);
+        expect(encryptedJson).toBeDefined();
+        expect(encryptedJson.database).toBeDefined();
+        expect(encryptedJson.database.host).toBeDefined();
+        verifyEncryptedValue(encryptedJson.database.host, unencryptedHost);
+        expect(encryptedJson.database.username).toBeDefined();
+        expect(encryptedJson.database.username).toBe(unencryptedUsername);
+        expect(encryptedJson.database.password).toBeDefined();
+        verifyEncryptedValue(encryptedJson.database.password, unencryptedPassword);
+        expect(encryptedJson.testarray).toBeDefined();
+        expect(encryptedJson.testarray.length).toStrictEqual(6);
+        verifyEncryptedValue(encryptedJson.testarray[3].arrayItemKey, unencryptedArrayItemValue1);
+        verifyEncryptedValue(encryptedJson.testarray[4].arrayItemKey, unencryptedArrayItemValue2);
+        verifyEncryptedValue(encryptedJson.testarray[5][0].subArrayItemKey, unencryptedSubArrayItemValue1);
         expect(encryptedJson['__hmac']).toBeDefined();
         expect(encryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
