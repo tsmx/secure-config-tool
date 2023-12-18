@@ -1,0 +1,27 @@
+{
+  "database": {
+    "host": "127.0.0.1",
+    "username": "ENCRYPTED|4129b62487b3f8af7bd1336ce11a5dad|b1925e96359a62fb53812a7ae6b4a2c3",
+    "password": "ENCRYPTED|466bbb68c2f7356765e35af4c3bfbb9b|4d2bee19431fff5288b54d7516704f4caf6f823018b3b30dde850e076571d3db"
+  },
+  "testarray": [
+    "one",
+    "two",
+    "three",
+    {
+      "arrayItemKey": "ENCRYPTED|8e31b4ff5e13a612a0c4db50b3c62f2f|421170f2a05f0a6008a821ab9e739d53",
+      "additionalItem1": "value1"
+    },
+    {
+      "arrayItemKey": "ENCRYPTED|d8e4eb8823189d226af0b46f52f0ccf3|e9de6b56808ed58b0d3a5a53c369caa0",
+      "additionalItem1": "value1",
+      "additionalItem2": 12
+    },
+    [
+      {
+        "subArrayItemKey": "ENCRYPTED|47e7fbeedb625388d54fffb5d1515442|e6f7c69dd8ad5d73760acf7a3de4f77be8d3f9856f7fffd9ac744ecfa4c5d519"
+      }
+    ]
+  ],
+  "__hmac": "87273ca2e09d25da88ddbf624f0a1210c383da701d5e12d9632291e2c1d5b18d"
+}

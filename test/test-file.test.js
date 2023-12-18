@@ -31,6 +31,15 @@ describe('secure-config-tool test-file test suite', () => {
         expect(testOutput[1].endsWith('PASSED')).toBeTruthy();
     });
 
+    it('tests a successful file test with encrypted object arrays', () => {
+        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        const testFile = require('../functions/test-file');
+        testFile('./test/testfiles/config-test-array.json');
+        expect(testOutput.length).toBe(2);
+        expect(testOutput[0].endsWith('PASSED')).toBeTruthy();
+        expect(testOutput[1].endsWith('PASSED')).toBeTruthy();
+    });
+
     it('tests a successful file test with verbose output', () => {
         process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
         const testFile = require('../functions/test-file');
