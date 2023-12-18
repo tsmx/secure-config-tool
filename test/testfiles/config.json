@@ -3,5 +3,24 @@
         "host": "127.0.0.1",
         "username": "SecretDbUser",
         "password": "SecretDbPassword"
-    }
+    },
+    "testarray": [
+        "one",
+        "two",
+        "three",
+        {
+            "arrayItemKey": "arrayItemValue1",
+            "additionalItem1": "value1"
+        },
+        {
+            "arrayItemKey": "arrayItemValue2",
+            "additionalItem1": "value1",
+            "additionalItem2": 12
+        },
+        [
+            {
+                "subArrayItemKey": "subArrayItemValue1"
+            }
+        ]
+    ]
 }

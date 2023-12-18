@@ -1,4 +1,4 @@
-const { verifyEncryptedJson, verifyUnencryptedJson, verifyEncryptedValue } = require('./test-utils');
+const { verifyEncryptedJson, verifyUnencryptedJson, verifyUnencryptedJsonArray, verifyEncryptedValue } = require('./test-utils');
 
 describe('secure-config-tool create-file test suite', () => {
 
@@ -10,6 +10,9 @@ describe('secure-config-tool create-file test suite', () => {
     const unencryptedUsername = 'SecretDbUser';
     const unencryptedPassword = 'SecretDbPassword';
     const unencryptedDatabase = 'MyDB';
+    const unencryptedArrayItemValue1 = 'arrayItemValue1';
+    const unencryptedArrayItemValue2 = 'arrayItemValue2';
+    const unencryptedSubArrayItemValue1 = 'subArrayItemValue1';
 
     const TEST_KEY = 'iC771qNLe+OGVcduw8fqpDIIK7lK0T5p';
     const TEST_KEY_HEX = '9af7d400be4705147dc724db25bfd2513aa11d6013d7bf7bdb2bfe050593bd0f';
@@ -55,7 +58,7 @@ describe('secure-config-tool create-file test suite', () => {
         const originalConfig = require('./testfiles/config.json');
         const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config.json', { patterns: 'host,pass'});
+        createFile('./test/testfiles/config.json', { patterns: 'host,pass' });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson).toBeDefined();
@@ -76,7 +79,7 @@ describe('secure-config-tool create-file test suite', () => {
         const originalConfig = require('./testfiles/config-ambiguous-prop.json');
         const expectedHmac = oh.calculateHmac(originalConfig, TEST_KEY_HEX);
         const createFile = require('../functions/create-file');
-        createFile('./test/testfiles/config-ambiguous-prop.json', { patterns: 'host,pass,database'});
+        createFile('./test/testfiles/config-ambiguous-prop.json', { patterns: 'host,pass,database' });
         expect(testOutput.length).toBe(1);
         let encryptedJson = JSON.parse(testOutput[0]);
         expect(encryptedJson).toBeDefined();
@@ -126,6 +129,7 @@ describe('secure-config-tool create-file test suite', () => {
         expect(testOutput.length).toBe(1);
         let unencryptedJson = JSON.parse(testOutput[0]);
         verifyUnencryptedJson(unencryptedJson);
+        verifyUnencryptedJsonArray(unencryptedJson);
         expect(unencryptedJson['__hmac']).toBeDefined();
         expect(unencryptedJson['__hmac']).toStrictEqual(expectedHmac);
     });
