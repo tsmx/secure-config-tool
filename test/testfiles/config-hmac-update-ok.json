@@ -1,9 +1,28 @@
 {
   "database": {
     "host": "127.0.0.1",
-    "username": "ENCRYPTED|a8c967bcf71a65fdeb29c6d965059fbf|04262ca07306dd7883c1c352a7083346",
-    "password": "ENCRYPTED|acbdb333085cb712c514510b44fe78ff|5da8a72455986edc61e36b38d8660a4849d263577c5a9f4ccaff57bd6d8e35ee",
+    "username": "ENCRYPTED|4129b62487b3f8af7bd1336ce11a5dad|b1925e96359a62fb53812a7ae6b4a2c3",
+    "password": "ENCRYPTED|466bbb68c2f7356765e35af4c3bfbb9b|4d2bee19431fff5288b54d7516704f4caf6f823018b3b30dde850e076571d3db",
     "port": 1521
   },
-  "__hmac": "38ba13feaab8cbdb790bb6aafd4b18b813bbee9b36cd10d314d1306ff1454dc2"
+  "testarray": [
+    "one",
+    "two",
+    "three",
+    {
+      "arrayItemKey": "ENCRYPTED|8e31b4ff5e13a612a0c4db50b3c62f2f|421170f2a05f0a6008a821ab9e739d53",
+      "additionalItem1": "value1"
+    },
+    {
+      "arrayItemKey": "ENCRYPTED|d8e4eb8823189d226af0b46f52f0ccf3|e9de6b56808ed58b0d3a5a53c369caa0",
+      "additionalItem1": "value1",
+      "additionalItem2": 12
+    },
+    [
+      {
+        "subArrayItemKey": "ENCRYPTED|47e7fbeedb625388d54fffb5d1515442|e6f7c69dd8ad5d73760acf7a3de4f77be8d3f9856f7fffd9ac744ecfa4c5d519"
+      }
+    ]
+  ],
+  "__hmac": "c807d4d9f6d9daa2105c7684abc7a87a94755807380bc74f6efe8e9af311f7a8"
 }
