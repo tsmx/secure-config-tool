@@ -44,7 +44,7 @@ module.exports = function (file, options) {
         }
     }
     if (!options || (options && options.encryption !== false)) {
-        jt.traverse(config, callbacks, true);
+        jt.traverse(config, callbacks);
     }
     console.log(JSON.stringify(config, null, 2));
 };

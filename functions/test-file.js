@@ -42,7 +42,7 @@ module.exports = function (file, options) {
         }
     };
     try {
-        jt.traverse(config, callbacks, true);
+        jt.traverse(config, callbacks);
     }
     catch (error) {
         console.log(error.message);

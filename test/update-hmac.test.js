@@ -56,7 +56,7 @@ describe('secure-config-tool update-hmac test suite', () => {
         expect(updatedJson.database.port).toStrictEqual(originalJson.database.port);
         expect(updatedJson['__hmac']).not.toStrictEqual(originalJson['__hmac']);
         // check against new HAMC caluclatio on-the-fly
-        jt.traverse(originalJson, cbDecrypt, true);
+        jt.traverse(originalJson, cbDecrypt);
         delete originalJson['__hmac'];
         expect(updatedJson['__hmac']).toStrictEqual(oh.calculateHmac(originalJson, TEST_KEY_HEX));
         // double-check against pre.calculated HMAC
@@ -80,7 +80,7 @@ describe('secure-config-tool update-hmac test suite', () => {
         expect(updatedJson[customProp]).toBeDefined();
         expect(originalJson[customProp]).toBeDefined();
         expect(updatedJson[customProp]).not.toStrictEqual(originalJson[customProp]);
-        jt.traverse(originalJson, cbDecrypt, true);
+        jt.traverse(originalJson, cbDecrypt);
         delete originalJson[customProp];
         expect(updatedJson[customProp]).toStrictEqual(oh.calculateHmac(originalJson, TEST_KEY_HEX));
     });

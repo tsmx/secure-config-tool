@@ -37,7 +37,7 @@ module.exports = function (file, options) {
     let configFile = fs.readFileSync(file);
     let config = JSON.parse(configFile);
     try {
-        jt.traverse(config, cbDecrypt, true);
+        jt.traverse(config, cbDecrypt);
     }
     catch (error) {
         console.log(error.message);
@@ -51,7 +51,7 @@ module.exports = function (file, options) {
         delete config['__hmac'];
         oh.createHmac(config, configKey);
     }
-    jt.traverse(config, cbRestoreEncryption, true);
+    jt.traverse(config, cbRestoreEncryption);
     const result = JSON.stringify(config, null, 2);
     if (options && options.overwrite === true) {
         fs.writeFileSync(file, result);
