@@ -5,7 +5,7 @@ module.exports = function (secret, options) {
     let key = null;
     let decrypted = null;
     try {
-        key = cryptUtils.retrieveKey(verbose);
+        key = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY, verbose);
         decrypted = cryptUtils.decrypt(secret, key);
     }
     catch (error) {

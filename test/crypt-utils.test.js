@@ -34,9 +34,9 @@ describe('crypt utils test suite', () => {
     });
 
     it('tests a successful key retrieval', () => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY;
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY] = TEST_KEY;
         expect(testOutput.length).toBe(0);
-        const key = cryptUtils.retrieveKey(true);
+        const key = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY, true);
         expect(key).toBeDefined();
         expect(key.length).toBe(32);
         expect(testOutput.length).toBe(1);
@@ -45,9 +45,9 @@ describe('crypt utils test suite', () => {
     });
 
     it('tests a successful key retrieval for a hexadecimal string', () => {
-        process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_HEX;
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY] = TEST_KEY_HEX;
         expect(testOutput.length).toBe(0);
-        const key = cryptUtils.retrieveKey(true);
+        const key = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY, true);
         expect(key).toBeDefined();
         expect(key.length).toBe(64);
         expect(testOutput.length).toBe(1);
@@ -57,15 +57,15 @@ describe('crypt utils test suite', () => {
 
     it('tests a failed key retrieval - no key found', () => {
         expect(() => {
-            cryptUtils.retrieveKey();
-        }).toThrow('Environment variable CONFIG_ENCRYPTION_KEY not set.');
+            cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY);
+        }).toThrow(`Environment variable ${cryptUtils.CONFIG_ENCRYPTION_KEY} not set.`);
     });
 
     it('tests a failes key retrieval - invalid key length', () => {
         expect(() => {
-            process.env['CONFIG_ENCRYPTION_KEY'] = TEST_KEY_BROKEN;
-            cryptUtils.retrieveKey();
-        }).toThrow('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
+            process.env[cryptUtils.CONFIG_ENCRYPTION_KEY] = TEST_KEY_BROKEN;
+            cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY);
+        }).toThrow(`${cryptUtils.CONFIG_ENCRYPTION_KEY} length must be 32 bytes.`);
     });
 
     it('tests a successful encryption and decryption', () => {

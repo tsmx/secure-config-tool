@@ -11,7 +11,7 @@ module.exports = function (file, options) {
     let configKey = null;
     let encryptedEntries = new Map();
     try {
-        configKey = cryptUtils.retrieveKey();
+        configKey = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY);
     }
     catch (error) {
         console.log(error.message);

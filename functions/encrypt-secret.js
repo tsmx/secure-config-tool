@@ -4,7 +4,7 @@ module.exports = function (secret, options) {
     const verbose = options && options.verbose;
     let key = null;
     try {
-        key = cryptUtils.retrieveKey(verbose);
+        key = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY, verbose);
     }
     catch (error) {
         console.log(error.message);

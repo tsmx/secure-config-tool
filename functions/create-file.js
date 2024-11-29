@@ -15,7 +15,7 @@ function patternMatch(value, patterns) {
 module.exports = function (file, options) {
     let configKey = null;
     try {
-        configKey = cryptUtils.retrieveKey();
+        configKey = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY);
     }
     catch (error) {
         console.log(error.message);

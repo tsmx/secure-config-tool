@@ -2,27 +2,29 @@ const crypto = require('crypto');
 const sc = require('@tsmx/string-crypto');
 
 const prefix = 'ENCRYPTED|';
+const encryptionKey  = 'CONFIG_ENCRYPTION_KEY';
 
 const decryptErrorMessage = `Decryption failed. Please check that the right key is used and the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"
 See the docs under: https://github.com/tsmx/secure-config`;
 
 module.exports.ENCRYPTION_PREFIX = prefix;
 module.exports.DECRYPTION_ERROR = decryptErrorMessage;
+module.exports.CONFIG_ENCRYPTION_KEY = encryptionKey;
 
-module.exports.retrieveKey = function (verbose = false) {
+module.exports.retrieveKey = function (keyName, verbose = false) {
     const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');
     let result = null;
-    if (!process.env.CONFIG_ENCRYPTION_KEY) {
-        throw new Error('Environment variable CONFIG_ENCRYPTION_KEY not set.');
+    if (!process.env[keyName]) {
+        throw new Error(`Environment variable ${keyName} not set.`);
     }
-    else if (process.env.CONFIG_ENCRYPTION_KEY.toString().length == 32 || hexReg.test(process.env.CONFIG_ENCRYPTION_KEY.toString())) {
-        result = process.env.CONFIG_ENCRYPTION_KEY.toString();
+    else if (process.env[keyName].toString().length == 32 || hexReg.test(process.env[keyName].toString())) {
+        result = process.env[keyName].toString();
     }
     else {
-        throw new Error('CONFIG_ENCRYPTION_KEY length must be 32 bytes.');
+        throw new Error(`${keyName} length must be 32 bytes.`);
     }
     if (verbose) {
-        console.log('CONFIG_ENCRYPTION_KEY found, using key: **************************' + result.slice(result.length - 6));
+        console.log(`${keyName} found, using key: **************************` + result.slice(result.length - 6));
     }
     return result;
 };

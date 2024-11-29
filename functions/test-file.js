@@ -13,7 +13,7 @@ module.exports = function (file, options) {
     let hmacResult = 'not tested';
     let configKey = null;
     try {
-        configKey = cryptUtils.retrieveKey();
+        configKey = cryptUtils.retrieveKey(cryptUtils.CONFIG_ENCRYPTION_KEY);
     }
     catch (error) {
         console.log(error.message);
