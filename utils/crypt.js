@@ -38,7 +38,7 @@ module.exports.decrypt = function (text, key) {
     try {
         decrypted = sc.decrypt(text.toString().substring(prefix.length), { key: key });
     }
-    catch (error) {
+    catch (_error) {
         throw new Error(decryptErrorMessage);
     }
     return decrypted.toString();
