@@ -3,6 +3,7 @@ const sc = require('@tsmx/string-crypto');
 
 const prefix = 'ENCRYPTED|';
 const encryptionKey  = 'CONFIG_ENCRYPTION_KEY';
+const encryptionKeyNew  = 'CONFIG_ENCRYPTION_KEY_NEW';
 
 const decryptErrorMessage = `Decryption failed. Please check that the right key is used and the encrypted secret is valid and has the form "ENCRYPTED|IV|DATA"
 See the docs under: https://github.com/tsmx/secure-config`;
@@ -10,6 +11,7 @@ See the docs under: https://github.com/tsmx/secure-config`;
 module.exports.ENCRYPTION_PREFIX = prefix;
 module.exports.DECRYPTION_ERROR = decryptErrorMessage;
 module.exports.CONFIG_ENCRYPTION_KEY = encryptionKey;
+module.exports.CONFIG_ENCRYPTION_KEY_NEW = encryptionKeyNew;
 
 module.exports.retrieveKey = function (keyName, verbose = false) {
     const hexReg = new RegExp('^[0-9A-F]{64}$', 'i');

@@ -1,5 +1,5 @@
 module.exports.createHelpText = `
-If no patterns are specified with the -p option then the default patterns are used: \'user\',\'pass\',\'token\'.
+If no patterns are specified with the -p option then the default patterns are used: 'user','pass','token'.
 For every supplied pattern a case-insensitive regex match will be done for every key of the original JSON.
 If the match succeeds, the value of the key will be encrypted.
 
@@ -23,6 +23,13 @@ Examples:
 $ secure-config-tool update-hmac config.json > config-production.json
 
 $ secure-config-tool update-hmac -hp "_signature" -o config-production.json
+`;
+
+module.exports.roatateHelpText = `
+Examples:
+$ secure-config-tool rotate-key config.json > config-production.json
+
+$ secure-config-tool rotate-key -hp "_signature" -o config-production.json
 `;
 
 module.exports.testHelpText = `
