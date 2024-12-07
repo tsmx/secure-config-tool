@@ -3,7 +3,7 @@
 var { program } = require('commander');
 const createFile = require('./functions/create-file');
 const updateHmac = require('./functions/update-hmac');
-const rotateKey = require('./functions/roate-key');
+const rotateKey = require('./functions/rotate-key');
 const testFile = require('./functions/test-file');
 const createKey = require('./functions/create-key');
 const encryptSecret = require('./functions/encrypt-secret');
@@ -38,7 +38,7 @@ program
     .option('-o, --overwrite', 'overwrite file directly instead of writing to stdout')
     .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated with the new key (if one), default is \'__hmac\'')
     .action(rotateKey)
-    .addHelpText('after', helpTexts.roatateHelpText);
+    .addHelpText('after', helpTexts.rotateHelpText);
 
 program
     .command('test <config-file>')

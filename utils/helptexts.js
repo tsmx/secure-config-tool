@@ -25,7 +25,7 @@ $ secure-config-tool update-hmac config.json > config-production.json
 $ secure-config-tool update-hmac -hp "_signature" -o config-production.json
 `;
 
-module.exports.roatateHelpText = `
+module.exports.rotateHelpText = `
 Examples:
 $ secure-config-tool rotate-key config.json > config-production.json
 
