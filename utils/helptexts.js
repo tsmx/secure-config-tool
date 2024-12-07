@@ -26,6 +26,9 @@ $ secure-config-tool update-hmac -hp "_signature" -o config-production.json
 `;
 
 module.exports.rotateHelpText = `
+Loads an existing secure-config file and updates encryption as well as optional HMAC from old CONFIG_ENCRYPTION_KEY to CONFIG_ENCRYPTION_KEY_NEW.
+Both environment variables must be set.
+
 Examples:
 $ secure-config-tool rotate-key config.json > config-production.json
 
