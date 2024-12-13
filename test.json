@@ -1,8 +1,0 @@
-{
-  "database": {
-    "host": "127.0.0.1",
-    "username": "ENCRYPTED|daa110feaaca0c5ccdaf55fd08c9b0e6|c58818d4989bbb2052b8f7cdecdbcf26",
-    "password": "ENCRYPTED|0365ca5465f620b63143a98237fd328d|e77b715776c09790d63f9bcf04691513dfae6be913c7d71376a94bf3440140a9"
-  },
-  "_signature": "3c22b0a046c6a25c523e0721c70574402009378a87c598b55365eb131d0c0394"
-}
