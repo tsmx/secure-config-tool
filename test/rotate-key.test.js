@@ -1,3 +1,4 @@
+const fs = require('fs');
 const cryptUtils = require('../utils/crypt');
 const oh = require('@tsmx/object-hmac');
 
@@ -84,6 +85,28 @@ describe('secure-config-tool rotate-key test suite', () => {
         expect(cryptUtils.decrypt(updatedJson.database.password, TEST_KEY_HEX_NEW)).toStrictEqual(originalConfig.database.password);
         expect(updatedJson[customHmacProp]).toBeDefined();
         expect(updatedJson[customHmacProp]).toStrictEqual(oh.calculateHmac(originalConfig, TEST_KEY_HEX_NEW));
+    });
+
+    it('tests a successful key rotation with file overwriting', () => {
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY] = TEST_KEY_HEX_OLD;
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY_NEW] = TEST_KEY_HEX_NEW;
+        let resultFileName = null;
+        let updatedJson = null;
+        const mockFileWrite = jest.spyOn(fs, 'writeFileSync')
+            .mockImplementation((file, data) => { resultFileName = file; updatedJson = JSON.parse(data); });
+        const rotateKey = require('../functions/rotate-key');
+        rotateKey('./test/testfiles/config-test.json', { overwrite: true });
+        expect(mockFileWrite).toHaveBeenCalled();
+        mockFileWrite.mockRestore();
+        const originalConfig = require('./testfiles/config-test-plain.json');
+        expect(resultFileName).toStrictEqual('./test/testfiles/config-test.json');
+        expect(updatedJson.database.host).toStrictEqual(originalConfig.database.host);
+        expect(updatedJson.database.username).toBeDefined();
+        expect(cryptUtils.decrypt(updatedJson.database.username, TEST_KEY_HEX_NEW)).toStrictEqual(originalConfig.database.username);
+        expect(updatedJson.database.password).toBeDefined();
+        expect(cryptUtils.decrypt(updatedJson.database.password, TEST_KEY_HEX_NEW)).toStrictEqual(originalConfig.database.password);
+        expect(updatedJson['__hmac']).toBeDefined();
+        expect(updatedJson['__hmac']).toStrictEqual(oh.calculateHmac(originalConfig, TEST_KEY_HEX_NEW));
     });
 
     it('tests a failed key rotation because of wrong old key', () => {
