@@ -9,12 +9,13 @@
 > Supporting command-line tool for [@tsmx/secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
 Features:
-- create secure configurations with encrypted secrets and a HMAC out of existing JSON files
-- update HMAC values of existing secure configuration files after they have changed
-- test existing secure configuration JSON files (HMAC validation & decryption)
-- generate keys 
-- encrypt single secrets for copy & paste into existing configurations
-- decrypt single secrets for testing purposes
+- **create secure configurations** with encrypted secrets and a HMAC out of existing JSON files
+- **key rotation** of an existing secure configuration
+- **update HMAC** values of existing secure configuration files after they have changed
+- **test** existing secure configuration JSON files (HMAC validation & decryption)
+- **generate keys** 
+- **encrypt single secrets** for copy & paste into existing configurations
+- **decrypt single secrets** for testing purposes
 
 To get more information please also check out the [secure-config documentation](https://tsmx.net/secure-config/).
 
@@ -66,7 +67,33 @@ Do not create and add the configurations HMAC to the output. Helpful if you only
 
 #### -hp, --hmac-prop
 
-Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-nh` is specified at the same time.  
+Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-nh` is specified at the same time.
+
+### rotate-key
+
+Rotates the key of an existing secure configuration file. Environment variables `CONFIG_ENCRYPTION_KEY` and `CONFIG_ENCRYPTION_KEY_NEW` must be set:
+- `CONFIG_ENCRYPTION_KEY`: the key for the existing secure configuration file
+- `CONFIG_ENCRYPTION_KEY_NEW`: the ney key to rotate to (Hint: you can use the [genkey option](#genkey) to generate a new one)
+
+Basic console example:
+
+```
+[tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY=...
+[tsmx@localhost ]$ export CONFIG_ENCRYPTION_KEY_NEW=...
+[tsmx@localhost ]$ secure-config-tool rotate-key config-production.json
+```
+
+The result is printed to stdout. Use `>` to save it in a new file or the `--overwrite` option. 
+
+If the source secure configuration file includes a HMAC in the default `__hmac` property it will be updated automatically useing the new key. If the source file has a HMAc in a custom named property, use the `-hp` option to provide the property name.
+
+#### -hp, --hmac-prop
+
+Use this option to specify the property name of an existing HMAC value to be updated in the source secure configuration file if it is deviating from the default `__hmac`.
+
+#### -o, --overwrite
+
+Overwrite the original configuration file after rotating the key instead of writing to stdout.
 
 ### update-hmac
 
@@ -144,6 +171,8 @@ MySecret
 ### 2.2.0
 - Support for encrypted properties of objects in arrays added, e.g. `{  configArray: [ { key: 'ENCRYPTED|...' }, { key: 'ENCRYPTED|... ' } ] }`
 
+### 2.3.0
+- [Key rotation](#rotate-key) feature added
 
 ## Test
 
