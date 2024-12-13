@@ -70,8 +70,8 @@ describe('secure-config-tool update-hmac test suite', () => {
         let updatedJson = JSON.parse(testOutput[0]);
         let originalJson = JSON.parse(fs.readFileSync('./test/testfiles/config-hmac-update.json'));
         expect(updatedJson.database.host).toStrictEqual(originalJson.database.host);
-        expect(updatedJson.database.user).toStrictEqual(originalJson.database.user);
-        expect(updatedJson.database.pass).toStrictEqual(originalJson.database.pass);
+        expect(updatedJson.database.username).toStrictEqual(originalJson.database.username);
+        expect(updatedJson.database.password).toStrictEqual(originalJson.database.password);
         expect(updatedJson.database.port).toStrictEqual(originalJson.database.port);
         expect(updatedJson['__hmac']).not.toStrictEqual(originalJson['__hmac']);
         // check against new HAMC calculation on-the-fly
@@ -91,8 +91,8 @@ describe('secure-config-tool update-hmac test suite', () => {
         let updatedJson = JSON.parse(testOutput[0]);
         let originalJson = JSON.parse(fs.readFileSync('./test/testfiles/config-hmac-prop-update.json'));
         expect(updatedJson.database.host).toStrictEqual(originalJson.database.host);
-        expect(updatedJson.database.user).toStrictEqual(originalJson.database.user);
-        expect(updatedJson.database.pass).toStrictEqual(originalJson.database.pass);
+        expect(updatedJson.database.username).toStrictEqual(originalJson.database.username);
+        expect(updatedJson.database.password).toStrictEqual(originalJson.database.password);
         expect(updatedJson.database.port).toStrictEqual(originalJson.database.port);
         expect(updatedJson['__hmac']).toBeUndefined();
         expect(originalJson['__hmac']).toBeUndefined();

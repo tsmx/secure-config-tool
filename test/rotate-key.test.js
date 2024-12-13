@@ -1,6 +1,3 @@
-const fs = require('fs');
-const jt = require('@tsmx/json-traverse');
-const oh = require('@tsmx/object-hmac');
 const cryptUtils = require('../utils/crypt');
 
 describe('secure-config-tool rotate-key test suite', () => {
@@ -50,6 +47,19 @@ describe('secure-config-tool rotate-key test suite', () => {
         expect(testOutput.length).toEqual(1);
         expect(testOutput[0]).toEqual(`Environment variable ${cryptUtils.CONFIG_ENCRYPTION_KEY_NEW} not set.`);
         mockExit.mockRestore();
+    });
+
+    it('tests a successful key rotation', () => {
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY] = TEST_KEY_HEX_OLD;
+        process.env[cryptUtils.CONFIG_ENCRYPTION_KEY_NEW] = TEST_KEY_HEX_NEW;
+        const rotateKey = require('../functions/rotate-key');
+        rotateKey('./test/testfiles/config-test.json');
+        expect(testOutput.length).toBe(1);
+        let updatedJson = JSON.parse(testOutput[0]);
+        expect(updatedJson.database.host).toStrictEqual('127.0.0.1');
+        expect(updatedJson.database.username).toBeDefined();
+        expect(updatedJson.database.password).toBeDefined();
+        expect(updatedJson['__hmac']).toBeDefined();
     });
 
 });
