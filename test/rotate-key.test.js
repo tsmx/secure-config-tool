@@ -1,4 +1,5 @@
 const cryptUtils = require('../utils/crypt');
+const oh = require('@tsmx/object-hmac');
 
 describe('secure-config-tool rotate-key test suite', () => {
 
@@ -57,12 +58,13 @@ describe('secure-config-tool rotate-key test suite', () => {
         expect(testOutput.length).toBe(1);
         let updatedJson = JSON.parse(testOutput[0]);
         const originalConfig = require('./testfiles/config-test-plain.json');
-        expect(updatedJson.database.host).toStrictEqual('127.0.0.1');
+        expect(updatedJson.database.host).toStrictEqual(originalConfig.database.host);
         expect(updatedJson.database.username).toBeDefined();
         expect(cryptUtils.decrypt(updatedJson.database.username, TEST_KEY_HEX_NEW)).toStrictEqual(originalConfig.database.username);
         expect(updatedJson.database.password).toBeDefined();
         expect(cryptUtils.decrypt(updatedJson.database.password, TEST_KEY_HEX_NEW)).toStrictEqual(originalConfig.database.password);
         expect(updatedJson['__hmac']).toBeDefined();
+        expect(updatedJson['__hmac']).toStrictEqual(oh.calculateHmac(originalConfig, TEST_KEY_HEX_NEW));
     });
 
 });
