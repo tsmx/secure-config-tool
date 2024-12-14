@@ -85,7 +85,7 @@ Basic console example:
 
 The result is printed to stdout. Use `>` to save it in a new file or the `--overwrite` option. 
 
-If the source secure configuration file includes a HMAC in the default `__hmac` property it will be updated automatically useing the new key. If the source file has a HMAc in a custom named property, use the `-hp` option to provide the property name.
+If the source secure configuration file includes a HMAC in the default `__hmac` property, it will be updated automatically using the new key. If the source file has a HMAC in a custom named property, use the `-hp` option to provide the property name and it will be updated.
 
 #### -hp, --hmac-prop
 
