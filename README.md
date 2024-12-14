@@ -8,14 +8,14 @@
 
 > Supporting command-line tool for [@tsmx/secure-config](https://www.npmjs.com/package/@tsmx/secure-config).
 
-Features:
-- **create secure configurations** with encrypted secrets and a HMAC out of existing JSON files
-- **key rotation** of an existing secure configuration
-- **update HMAC** values of existing secure configuration files after they have changed
-- **test** existing secure configuration JSON files (HMAC validation & decryption)
-- **generate keys** 
-- **encrypt single secrets** for copy & paste into existing configurations
-- **decrypt single secrets** for testing purposes
+**Features:**
+- [create secure configurations](#create) with encrypted secrets and a HMAC out of existing JSON files
+- [key rotation](#rotate-key) of an existing secure configuration
+- [update HMAC](#update-hmac) values of existing secure configuration files after they have changed
+- [test](#test) existing secure configuration JSON files (HMAC validation & decryption)
+- [generate keys](#genkey) 
+- [encrypt single secrets](#encrypt) for copy & paste into existing configurations
+- [decrypt single secrets](#decrypt) for testing purposes
 
 To get more information please also check out the [secure-config documentation](https://tsmx.net/secure-config/).
 
