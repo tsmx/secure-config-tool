@@ -1,6 +1,6 @@
 {
     "name": "@tsmx/secure-config-tool",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "description": "Command-line tool for @tsmx/secure-config.",
     "main": "secure-config-tool.js",
     "author": "tsmx <dev@tsmx.net>",
@@ -38,6 +38,7 @@
         "credentials",
         "secret",
         "key injection",
+        "key rotation",
         "multi-environment",
         "JSON",
         "NODE_ENV",
