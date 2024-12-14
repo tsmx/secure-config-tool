@@ -71,7 +71,7 @@ Specify a property name to store the generated HMAC value in. Defaults to `__hma
 
 ### rotate-key
 
-Rotates the key of an existing secure configuration file. Environment variables `CONFIG_ENCRYPTION_KEY` and `CONFIG_ENCRYPTION_KEY_NEW` must be set:
+Rotates the key of an existing secure configuration file produced with [create](#create). Environment variables `CONFIG_ENCRYPTION_KEY` and `CONFIG_ENCRYPTION_KEY_NEW` must be set:
 - `CONFIG_ENCRYPTION_KEY`: the key for the existing secure configuration file
 - `CONFIG_ENCRYPTION_KEY_NEW`: the ney key to rotate to (Hint: you can use the [genkey option](#genkey) to generate a new one)
 
