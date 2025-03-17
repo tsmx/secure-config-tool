@@ -18,9 +18,9 @@ program
     .command('create <config-file>')
     .description('Create a secure-config out of an existing JSON configuration file')
     .option('-p, --patterns <pattern-list>', 'a comma-separated list of key-patterns that should be encrypted')
-    .option('-ne, --no-encryption', 'don\'t encrypt any configuration value, e.g. if you only want to use the HMAC feature')
-    .option('-nh, --no-hmac', 'don\'t generate a HMAC for the configuration')
-    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the property to store the HMAC in, default is \'__hmac\'')
+    .option('--ne, --no-encryption', 'don\'t encrypt any configuration value, e.g. if you only want to use the HMAC feature')
+    .option('--nh, --no-hmac', 'don\'t generate a HMAC for the configuration')
+    .option('--hp, --hmac-prop <hmac-prop>', 'custom name of the property to store the HMAC in, default is \'__hmac\'')
     .action(createFile)
     .addHelpText('after', helpTexts.createHelpText);
 
@@ -28,7 +28,7 @@ program
     .command('update-hmac <config-file>')
     .description('Update the HMAC of an existing secure-config configuration file')
     .option('-o, --overwrite', 'overwrite file directly instead of writing to stdout')
-    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated, default is \'__hmac\'')
+    .option('--hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated, default is \'__hmac\'')
     .action(updateHmac)
     .addHelpText('after', helpTexts.updateHelpText);
 
@@ -36,15 +36,15 @@ program
     .command('rotate-key <config-file>')
     .description('Rotates the key of an existing secure-config configuration file')
     .option('-o, --overwrite', 'overwrite file directly instead of writing to stdout')
-    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated with the new key (if one), default is \'__hmac\'')
+    .option('--hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to be updated with the new key (if one), default is \'__hmac\'')
     .action(rotateKey)
     .addHelpText('after', helpTexts.rotateHelpText);
 
 program
     .command('test <config-file>')
     .description('Test decryption and HMAC validation for an existing secure-config configuration file')
-    .option('-hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to validate, default is \'__hmac\'')
-    .option('-sh, --skip-hmac', 'skip HMAC validation test')
+    .option('--hp, --hmac-prop <hmac-prop>', 'custom name of the HMAC property to validate, default is \'__hmac\'')
+    .option('--sh, --skip-hmac', 'skip HMAC validation test')
     .option('-v, --verbose', 'verbose output')
     .action(testFile)
     .addHelpText('after', helpTexts.testHelpText);

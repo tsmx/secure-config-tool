@@ -9,20 +9,20 @@ Generate a secure-config with a HMAC and standard patterns for encryption
 $ secure-config-tool create config.json > config-production.json
 
 Generate a secure-config without HMAC and only encrypted values
-$ secure-config-tool create -nh config.json > config-production.json
+$ secure-config-tool create --nh config.json > config-production.json
 
 Generate a secure-config with a HMAC but without encrypting any values
-$ secure-config-tool create -ne config.json > config-production.json
+$ secure-config-tool create --ne config.json > config-production.json
 
 Generate a secure-config with custom encryption patterns 'user, 'api' and 'url' and a custom HMAC property named '_signature'
-$ secure-config-tool create -hp "_signature" -p "user,api,url" config.json > config-production.json
+$ secure-config-tool create --hp "_signature" -p "user,api,url" config.json > config-production.json
 `;
 
 module.exports.updateHelpText = `
 Examples:
 $ secure-config-tool update-hmac config.json > config-production.json
 
-$ secure-config-tool update-hmac -hp "_signature" -o config-production.json
+$ secure-config-tool update-hmac --hp "_signature" -o config-production.json
 `;
 
 module.exports.rotateHelpText = `
@@ -32,7 +32,7 @@ Both environment variables must be set.
 Examples:
 $ secure-config-tool rotate-key config.json > config-production.json
 
-$ secure-config-tool rotate-key -hp "_signature" -o config-production.json
+$ secure-config-tool rotate-key --hp "_signature" -o config-production.json
 `;
 
 module.exports.testHelpText = `

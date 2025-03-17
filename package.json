@@ -25,7 +25,7 @@
         "@tsmx/json-traverse": "^1.0.2",
         "@tsmx/object-hmac": "^1.1.1",
         "@tsmx/string-crypto": "^1.0.2",
-        "commander": "^12.1.0"
+        "commander": "^13.1.0"
     },
     "keywords": [
         "secure-config",
