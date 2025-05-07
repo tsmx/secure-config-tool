@@ -57,17 +57,17 @@ In the example stated above every key is tested case-insensitive against the two
 
 If no patterns are explicitly specified by using this option, the standard patterns are used: `'user', 'pass', 'token'`. 
 
-#### -ne, --no-encrpytion
+#### --ne, --no-encrpytion
 
 Do not encrypt any value of the input file. Helpful if you want to use only the HMAC feature withput any encryption.
 
-#### -nh, --no-hmac
+#### --nh, --no-hmac
 
 Do not create and add the configurations HMAC to the output. Helpful if you only want to use encryption without HMAC.
 
-#### -hp, --hmac-prop
+#### --hp, --hmac-prop
 
-Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-nh` is specified at the same time.
+Specify a property name to store the generated HMAC value in. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `--nh` is specified at the same time.
 
 ### rotate-key
 
@@ -85,9 +85,9 @@ Basic console example:
 
 The result is printed to stdout. Use `>` to save it in a new file or the `--overwrite` option. 
 
-If the source secure configuration file includes a HMAC in the default `__hmac` property, it will be updated automatically using the new key. If the source file has a HMAC in a custom named property, use the `-hp` option to provide the property name and it will be updated.
+If the source secure configuration file includes a HMAC in the default `__hmac` property, it will be updated automatically using the new key. If the source file has a HMAC in a custom named property, use the `--hp` option to provide the property name and it will be updated.
 
-#### -hp, --hmac-prop
+#### --hp, --hmac-prop
 
 Use this option to specify the property name of an existing HMAC value to be updated in the source secure configuration file if it is deviating from the default `__hmac`.
 
@@ -111,7 +111,7 @@ The key used to update the HMAC has to be set as environment variable `CONFIG_EN
 
 Overwrite the original configuration file with the updated HMAC instead of writing to stdout.
 
-#### -hp, --hmac-prop
+#### --hp, --hmac-prop
 
 Use this option to specify the property name of the HMAC value to be updated if it is deviating from the default `__hmac`.
 
@@ -126,11 +126,11 @@ Decryption: PASSED
 HMAC:       PASSED
 ```
 
-#### -hp, --hmac-prop
+#### --hp, --hmac-prop
 
-Specify the property name og the HMAC value to validate against. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `-sh` is specified at the same time.
+Specify the property name og the HMAC value to validate against. Defaults to `__hmac` if the option is not present. Doesn't have any effect if `--sh` is specified at the same time.
 
-#### -sh, --skip-hmac
+#### --sh, --skip-hmac
 
 Skip the HMAC validation test.
 
@@ -173,6 +173,9 @@ MySecret
 
 ### 2.3.0
 - [Key rotation](#rotate-key) feature added
+
+### 2.4.0
+- [Commander](https://www.npmjs.com/package/commander) upgraded to version 13. Note that 2-letter options must now be prefixed with double dashes `--` instead of a single dash, e.g. `secure-config-tool create --nh config.json > config-production.json`.
 
 ## Test
 

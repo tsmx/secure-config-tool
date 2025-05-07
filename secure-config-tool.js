@@ -12,7 +12,7 @@ const helpTexts = require('./utils/helptexts');
 
 program
     .description('Supporting command line tool for the @tsmx/secure-config npm package')
-    .version('2.2.1');
+    .version('2.4.0');
 
 program
     .command('create <config-file>')
